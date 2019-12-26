@@ -61,6 +61,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Components\MojangAPI\Error.cs" />
+    <Compile Include="Components\MojangAPI\Requests\AuthRequest.cs" />
+    <Compile Include="Components\MojangAPI\Requests\Request.cs" />
+    <Compile Include="Components\MojangAPI\Response.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
