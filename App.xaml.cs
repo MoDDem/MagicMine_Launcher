@@ -1,4 +1,5 @@
-﻿using MagicMine_Launcher.ViewModel;
+﻿using MagicMine_Launcher.View;
+using MagicMine_Launcher.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -15,7 +16,7 @@ namespace MagicMine_Launcher {
 		private new MainWindow MainWindow;
 
 		private void Application_Startup(object sender, StartupEventArgs e) {
-			MainViewModel mainVM = new MainViewModel();
+			var mainVM = new MainViewModel();
 			MainWindow = new MainWindow { DataContext = mainVM };
 			MainWindow.Show();
 		}

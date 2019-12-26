@@ -5,9 +5,10 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace MagicMine_Launcher.ViewModel {
-	class BaseVM {
+	class BaseVM : INotifyPropertyChanged {
 		public event PropertyChangedEventHandler PropertyChanged;
 
         protected bool Set<T>(ref T field, T value, [CallerMemberName] string propertyName = null) {

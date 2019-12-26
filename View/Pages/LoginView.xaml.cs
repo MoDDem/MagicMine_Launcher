@@ -1,5 +1,4 @@
-﻿using MagicMine_Launcher.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,14 +10,15 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MagicMine_Launcher.View {
+namespace MagicMine_Launcher.View.Pages {
 	/// <summary>
-	/// Логика взаимодействия для MainWindow.xaml
+	/// Логика взаимодействия для LoginView.xaml
 	/// </summary>
-	public partial class MainWindow : Window {
-		public MainWindow() {
+	public partial class LoginView : UserControl {
+		public LoginView() {
 			InitializeComponent();
 		}
 	}
