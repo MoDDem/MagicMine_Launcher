@@ -65,6 +65,8 @@
     <Compile Include="Components\MojangAPI\Requests\AuthRequest.cs" />
     <Compile Include="Components\MojangAPI\Requests\Request.cs" />
     <Compile Include="Components\MojangAPI\Response.cs" />
+    <Compile Include="Model\UserModel.cs" />
+    <Compile Include="ViewModel\UserViewModel.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>

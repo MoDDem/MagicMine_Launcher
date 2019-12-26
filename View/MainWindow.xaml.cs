@@ -21,5 +21,9 @@ namespace MagicMine_Launcher.View {
 		public MainWindow() {
 			InitializeComponent();
 		}
+
+		private void AuthUserList_SizeChanged(object sender, SizeChangedEventArgs e) {
+			PageNavigation.Width = AuthUserList.ActualWidth;
+		}
 	}
 }
