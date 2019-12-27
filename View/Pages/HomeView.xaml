@@ -6,12 +6,88 @@
     x:Class="MagicMine_Launcher.View.Pages.HomeView"
     mc:Ignorable="d" 
     d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <TextBlock Text="Home view" FontSize="26" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Button Command="{Binding DataContext.NavigationVM.ChangeVMCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" CommandParameter="{Binding LoginVM}" Content="Open Login View" Grid.Row="1"/>
-    </Grid>
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+        <Grid Background="#232931" Margin="0, 0, 0, 5" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="100*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="3"/>
+            </Grid.RowDefinitions>
+
+            <Image Grid.Column="0" Grid.RowSpan="3"/>
+            <TextBlock Grid.Column="1" Grid.Row="0" Text="Instance name" Foreground="#eee" FontSize="18"/>
+
+            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="Version: 1.14" Margin="0, 0, 5, 0" Foreground="#eee" FontSize="16"/>
+                <TextBlock Text="Type: release" Foreground="#eee" FontSize="16"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
+                <StackPanel.Style>
+                    <Style TargetType="{x:Type StackPanel}">
+                        <Style.Resources>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="Margin" Value="0, 0, 3, -1"/>
+                                <Setter Property="Padding" Value="5, 3"/>
+                                <Setter Property="VerticalAlignment" Value="Bottom"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Foreground" Value="#eee"/>
+                                <Setter Property="Background" Value="#393e46"/>
+                            </Style>
+                        </Style.Resources>
+                    </Style>
+                </StackPanel.Style>
+
+                <Button Content="Play Instance"/>
+                <Button Content="Edit"/>
+                <Button Content="Clone"/>
+                <Button Content="Backup"/>
+                <Button Content="Reinstall"/>
+                <Button Content="Open folder"/>
+                <Button Content="Delete"/>
+            </StackPanel>
+
+            <Border BorderThickness="3" BorderBrush="#4ecca3" Grid.ColumnSpan="2" Grid.Row="3"/>
+        </Grid>
+        
+        <WrapPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="0, 20, 0, 0">
+            <Image Source="../../Graphics/Icons/pepeHands.png" Width="150"/>
+            <TextBlock Text="No installed instances yet" Foreground="#eee" FontSize="26" HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <TextBlock Text="Install" Foreground="#eee" FontSize="18"/>
+                <Button Command="{Binding DataContext.NavigationVM.ChangeVMCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" CommandParameter="Vanilla" Content="Vanilla minecraft" Cursor="Hand">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="Transparent" BorderBrush="#00adb5" BorderThickness="{TemplateBinding BorderThickness}" Margin="3, 0">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Foreground" Value="#eee"/>
+                            <Setter Property="FontSize" Value="17"/>
+                            <Setter Property="BorderThickness" Value="0, 0, 0, 2"/>
+                            <Setter Property="Margin" Value="0, .4, 0, 0"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Foreground" Value="#00adb5"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <TextBlock Text="or try some modpacks" Foreground="#eee" FontSize="18"/>
+            </StackPanel>
+        </WrapPanel>
+    </StackPanel>
 </UserControl>

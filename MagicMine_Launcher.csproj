@@ -127,6 +127,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Graphics\Icons\pepeHands.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Graphics\Fonts\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

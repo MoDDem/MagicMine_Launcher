@@ -12,33 +12,43 @@ namespace MagicMine_Launcher.Model {
 		private int index;
 		private string title;
 		private object viewModel;
+		private bool isHidden;
 
 		public string Title {
-			get { return title; }
+			get => title;
 			set {
 				title = value;
 				OnPropertyChanged("Title");
 			}
 		}
 		public int Index {
-			get { return index; }
+			get => index; 
 			set {
 				index = value;
 				OnPropertyChanged("Index");
 			}
 		}
 		public object ViewModel {
-			get { return viewModel; }
+			get => viewModel; 
 			set {
 				viewModel = value;
 				OnPropertyChanged("ViewModel");
 			}
 		}
+		public bool IsHidden {
+			get => isHidden;
+			set {
+				isHidden = value;
+				OnPropertyChanged("IsHidden");
+			}
+		}
 
 		public PageModel[] GetPages() {
 			return new[] {
+				new PageModel { Title = "LoginPage", IsHidden = true, ViewModel = new LoginViewModel() },
+
 				new PageModel { Index = 0, Title = "Home / Instances", ViewModel = new HomeViewModel() },
-				new PageModel { Index = 1, Title = "Vanilla", ViewModel = new LoginViewModel() },
+				new PageModel { Index = 1, Title = "Vanilla" },
 				new PageModel { Index = 2, Title = "CurseForge", },
 				new PageModel { Index = 3, Title = "ATLauncher", },
 				new PageModel { Index = 4, Title = "TechnicLauncher", },

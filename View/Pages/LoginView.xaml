@@ -3,10 +3,121 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:local="clr-namespace:MagicMine_Launcher.View.Pages"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TextBlock Text="Login view" FontSize="26"/>
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Sign in" Foreground="#fff" TextAlignment="Center" FontSize="26" Padding="0, 2" Background="#00adb5" Grid.Row="0"/>
+        <Border Grid.Row="1" Padding="0, 5" Background="#232931">
+            <StackPanel Orientation="Vertical">
+                <Label Content="UserName or Email" Foreground="LightGray" Margin="0, -25.6, 0, 0" IsHitTestVisible="False" Panel.ZIndex="2" Background="Transparent" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left">
+                    <Label.RenderTransform>
+                        <TransformGroup>
+                            <TranslateTransform Y="39" X="9"/>
+                        </TransformGroup>
+                    </Label.RenderTransform>
+                    <Label.Style>
+                        <Style TargetType="Label">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=UserNameBox, UpdateSourceTrigger=PropertyChanged, Path=Text.Length}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
+                <TextBox Name="UserNameBox" Background="#393e46" Foreground="LightGray" Margin="10, 10, 10, 0" Padding="2, 8"/>
+                
+                <Label Content="User Password" Foreground="LightGray" IsHitTestVisible="False" Panel.ZIndex="2" Background="Transparent" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left">
+                    <Label.RenderTransform>
+                        <TransformGroup>
+                            <TranslateTransform Y="26" X="10"/>
+                        </TransformGroup>
+                    </Label.RenderTransform>
+                </Label>
+                <!--TODO: make it works with passwordbox-->
+                <PasswordBox Name="PasswordInputBox" Background="#393e46" Foreground="LightGray" Margin="10, -5, 10, 10" Padding="2, 8"/>
+
+                <Button Content="Login" Margin="10" Background="#393e46" Foreground="#eee" FontSize="18" Padding="2, 5"/>
+                
+                <Grid Margin="10, 5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox Content="Remember me" Foreground="#eee" IsChecked="True" Padding="2, 5" VerticalContentAlignment="Center" Grid.Column="0" HorizontalAlignment="Left"/>
+                    <Button Content="Forgot Password?" Grid.Column="1" HorizontalAlignment="Right" Background="#393e46" Foreground="#eee" Padding="5, 5"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+        <TextBlock FontSize="18" TextAlignment="Center" Padding="0, 15, 0, 0" Height="auto" Background="#00adb5" Width="360" Grid.Row="2">
+                <Ellipse Width="15" Height="15" Fill="#232931" Margin="0, 0, 7, 0" RenderTransformOrigin="0.5,0.5">
+                    <Ellipse.RenderTransform>
+                        <TranslateTransform Y="0"/>
+                    </Ellipse.RenderTransform>
+                    <Ellipse.Triggers>
+                        <EventTrigger RoutedEvent="Ellipse.Loaded">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimationUsingKeyFrames Duration="00:00:00.6" AutoReverse="True" RepeatBehavior="Forever" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)">
+                                        <EasingDoubleKeyFrame KeyTime="00:00:00.4" Value="-8">
+                                            <EasingDoubleKeyFrame.EasingFunction>
+                                                <BackEase EasingMode="EaseOut"/>
+                                            </EasingDoubleKeyFrame.EasingFunction>
+                                        </EasingDoubleKeyFrame>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Ellipse.Triggers>
+                </Ellipse>
+                <Ellipse Width="15" Height="15" Fill="#232931" Margin="0, 0, 7, 0" RenderTransformOrigin="0.5,0.5">
+                    <Ellipse.RenderTransform>
+                        <TranslateTransform Y="0"/>
+                    </Ellipse.RenderTransform>
+                    <Ellipse.Triggers>
+                        <EventTrigger RoutedEvent="Ellipse.Loaded">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00.2" Duration="00:00:00.6" AutoReverse="True" RepeatBehavior="Forever" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)">
+                                        <EasingDoubleKeyFrame KeyTime="00:00:00.4" Value="-8">
+                                            <EasingDoubleKeyFrame.EasingFunction>
+                                                <BackEase EasingMode="EaseOut"/>
+                                            </EasingDoubleKeyFrame.EasingFunction>
+                                        </EasingDoubleKeyFrame>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Ellipse.Triggers>
+                </Ellipse>
+                <Ellipse Width="15" Height="15" Fill="#232931" Margin="0, 0, 7, 0" RenderTransformOrigin="0.5,0.5">
+                    <Ellipse.RenderTransform>
+                        <TranslateTransform Y="0"/>
+                    </Ellipse.RenderTransform>
+                    <Ellipse.Triggers>
+                        <EventTrigger RoutedEvent="Ellipse.Loaded">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00.4" Duration="00:00:00.6" AutoReverse="True" RepeatBehavior="Forever" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)">
+                                        <EasingDoubleKeyFrame KeyTime="00:00:00.4" Value="-8">
+                                            <EasingDoubleKeyFrame.EasingFunction>
+                                                <BackEase EasingMode="EaseOut"/>
+                                            </EasingDoubleKeyFrame.EasingFunction>
+                                        </EasingDoubleKeyFrame>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Ellipse.Triggers>
+                </Ellipse>
+        </TextBlock>
     </Grid>
 </UserControl>

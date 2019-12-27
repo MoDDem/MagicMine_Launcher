@@ -25,7 +25,7 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0" Name="PageNavigation" Background="#232931">
-            <Grid Name="UserCard" Margin="0, 0, 0, 2" Background="#263238" DataContext="{Binding UserVM}">
+            <Grid Name="UserCard" Margin="0, 0, 0, 2" Background="#263238">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
@@ -39,18 +39,18 @@
 
                 <Image Grid.RowSpan="2" Grid.Column="0" Width="50" Height="50"/>
 
-                <TextBlock Text="{Binding SelectedUser.Name}" Grid.Row="0" Grid.Column="1" FontSize="18" VerticalAlignment="Bottom" Foreground="#eee"/>
+                <TextBlock Text="{Binding UserVM.SelectedUser.Name}" Grid.Row="0" Grid.Column="1" FontSize="18" VerticalAlignment="Bottom" Foreground="#eee"/>
                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0, 0, 2, 0">
                     <!--Invalid button color: #fa4252-->
                     <Button Margin="0, 0, 5, 0" Padding="8, 3" FontSize="14" Foreground="#232931" BorderThickness="0">
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding SelectedUser.IsValid}" Value="True">
+                                    <DataTrigger Binding="{Binding UserVM.SelectedUser.IsValid}" Value="True">
                                         <Setter Property="Background" Value="#4ecca3"/>
                                         <Setter Property="Content" Value="Valid"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding SelectedUser.IsValid}" Value="False">
+                                    <DataTrigger Binding="{Binding UserVM.SelectedUser.IsValid}" Value="False">
                                         <Setter Property="Background" Value="#fa4252"/>
                                         <Setter Property="Content" Value="Invalid"/>
                                     </DataTrigger>
@@ -62,11 +62,11 @@
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding SelectedUser.IsInGame}" Value="True">
+                                    <DataTrigger Binding="{Binding UserVM.SelectedUser.IsInGame}" Value="True">
                                         <Setter Property="Foreground" Value="#eee"/>
                                         <Setter Property="Text" Value="InGame"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding SelectedUser.IsInGame}" Value="False">
+                                    <DataTrigger Binding="{Binding UserVM.SelectedUser.IsInGame}" Value="False">
                                         <Setter Property="Foreground" Value="#eeeede"/>
                                         <Setter Property="Text" Value="Offline"/>
                                     </DataTrigger>
@@ -81,17 +81,17 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Button Content="Add new" Grid.Row="0" Background="Transparent" Foreground="White" BorderThickness="0" Padding="3,0"/>
+                    <Button Content="Add new" Command="{Binding NavigationVM.ChangeVMCommand}" CommandParameter="LoginPage" Grid.Row="0" Background="Transparent" Foreground="White" BorderThickness="0" Padding="3,0"/>
                     <Button Content="Logout" Grid.Row="1" Background="Transparent" Foreground="White" BorderThickness="0" Padding="3,0"/>
                 </Grid>
-                <StackPanel Grid.Row="3" Grid.ColumnSpan="3" Orientation="Vertical" x:Name="AuthUserList" SizeChanged="AuthUserList_SizeChanged">
+                <StackPanel Grid.Row="3" Grid.ColumnSpan="3" Orientation="Vertical" x:Name="AuthUserList" MinWidth="180" SizeChanged="AuthUserList_SizeChanged">
                     <StackPanel.Style>
                         <Style TargetType="StackPanel">
                             <Style.Resources>
                                 <Style TargetType="ListBox">
                                     <Setter Property="Height" Value="0"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsUserListOpened}" Value="True">
+                                        <DataTrigger Binding="{Binding UserVM.IsUserListOpened}" Value="True">
                                             <Setter Property="Height" Value="auto"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -99,7 +99,7 @@
                                 <Style TargetType="Button">
                                     <Setter Property="BorderThickness" Value="0"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsUserListOpened}" Value="True">
+                                        <DataTrigger Binding="{Binding UserVM.IsUserListOpened}" Value="True">
                                             <Setter Property="BorderThickness" Value="2, 0, 2, 2"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -107,7 +107,7 @@
                             </Style.Resources>
                         </Style>
                     </StackPanel.Style>
-                    <ListBox BorderThickness="2, 2, 2, 0" BorderBrush="#4ecca3" Background="#232931" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Users}" SelectedItem="{Binding SelectedUser}">
+                    <ListBox BorderThickness="2, 2, 2, 0" BorderBrush="#4ecca3" Background="#232931" HorizontalContentAlignment="Stretch" ItemsSource="{Binding UserVM.Users}" SelectedItem="{Binding UserVM.SelectedUser}">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ListBoxItem}">
                                 <Setter Property="BorderThickness" Value="0"/>
@@ -134,7 +134,7 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <Button Command="{Binding UserListStateCommand}" BorderBrush="#4ecca3" Content="^" VerticalContentAlignment="Bottom" Padding="0, 5, 0, 0" Background="#66242632" Foreground="White"/>
+                    <Button Command="{Binding UserVM.UserListStateCommand}" BorderBrush="#4ecca3" Content="^" VerticalContentAlignment="Bottom" Padding="0, 5, 0, 0" Background="#66242632" Foreground="White"/>
                 </StackPanel>
             </Grid>
 
@@ -168,6 +168,11 @@
                             <Setter Property="Padding" Value="0"/>
                             <Setter Property="Cursor" Value="Hand"/>
                             <Setter Property="BorderThickness" Value="0, 0, 0, 1"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsHidden}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
                         </Style>
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace MagicMine_Launcher.ViewModel {
 	class MainViewModel : BaseVM {
@@ -15,8 +16,12 @@ namespace MagicMine_Launcher.ViewModel {
 			NavigationVM = new NavigationViewModel();
 			UserVM = new UserViewModel();
 
-			NavigationVM.SelectedPage = NavigationVM.Pages.First();
-			UserVM.SelectedUser = UserVM.Users.First();
+			if(UserVM.Users.Count > 0) {
+				UserVM.SelectedUser = UserVM.Users.First();
+				NavigationVM.SelectedPage = NavigationVM.Pages.SingleOrDefault(PageViewModel => PageViewModel.Title == "Home / Instances");
+			} else {
+				NavigationVM.SelectedPage = NavigationVM.Pages.SingleOrDefault(PageViewModel => PageViewModel.Title == "LoginPage");
+			}
 		}
 	}
 }

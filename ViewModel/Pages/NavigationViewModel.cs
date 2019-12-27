@@ -30,7 +30,7 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 		}
 
 		private void ChangeVM(object obj) {
-			PageModel vm = Pages.SingleOrDefault(PageViewModel => PageViewModel.ViewModel?.GetType() == obj.GetType());
+			PageModel vm = Pages.SingleOrDefault(PageViewModel => PageViewModel.Title == obj.ToString());
 			SelectedPage = vm ?? Pages[0];
 		}
 	}
