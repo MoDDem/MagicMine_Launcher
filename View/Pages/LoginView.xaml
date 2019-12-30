@@ -37,6 +37,7 @@
                 <TextBox Name="UserNameBox" Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Background="#393e46" Foreground="LightGray" Margin="10, 10, 10, 0" Padding="2, 8">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
+                            <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
                             <Style.Triggers>
                                 <Trigger Property="Validation.HasError" Value="true">
                                     <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self},Path=(Validation.Errors)[0].ErrorContent}"/>
@@ -46,36 +47,39 @@
                     </TextBox.Style>
                 </TextBox>
 
-
+                <!--A little of shit-code here. Close your eyes and pass it by if u not ready for this-->
                 <Label Content="User Password" Foreground="LightGray" IsHitTestVisible="False" Panel.ZIndex="2" Background="Transparent" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left">
                     <Label.RenderTransform>
                         <TransformGroup>
-                            <TranslateTransform Y="26" X="10"/>
+                            <TranslateTransform Y="20" X="10"/>
                         </TransformGroup>
                     </Label.RenderTransform>
                     <Label.Style>
                         <Style TargetType="Label">
                             <Setter Property="Visibility" Value="Visible"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=PasswordInputBox, Path=(Validation.HasError)}" Value="False">
+                                <DataTrigger Binding="{Binding ElementName=PasswordHolder, Path=(Validation.HasError)}" Value="False">
                                     <Setter Property="Visibility" Value="Hidden"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </Label.Style>
                 </Label>
-                <PasswordBox x:Name="PasswordInputBox" pd:PasswordHelper.Attach="True" pd:PasswordHelper.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Background="#393e46" Foreground="LightGray" Margin="10, -5, 10, 10" Padding="2, 8">
+
+                <PasswordBox x:Name="PasswordHolder" pd:PasswordHelper.Attach="True" pd:PasswordHelper.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Background="#393e46" Foreground="LightGray" Margin="10, -10, 10, 5" Padding="2, 8">
                     <PasswordBox.Style>
                         <Style TargetType="PasswordBox">
+                            <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
                             <Style.Triggers>
-                                <Trigger Property="Validation.HasError" Value="True">
+                                <Trigger Property="Validation.HasError" Value="true">
                                     <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self},Path=(Validation.Errors)[0].ErrorContent}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </PasswordBox.Style>
                 </PasswordBox>
-
+                <!--The end. Now u can open your eyes-->
+                
                 <Button Content="Login" Margin="10" Background="#393e46" Foreground="#eee" FontSize="18" Padding="2, 5"/>
                 <Grid Margin="10, 5">
                     <Grid.ColumnDefinitions>

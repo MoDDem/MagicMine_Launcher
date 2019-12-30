@@ -42,22 +42,18 @@ namespace MagicMine_Launcher.Components {
             dp.SetValue(IsUpdatingProperty, value);
         }
 
-        private static void OnPasswordPropertyChanged(DependencyObject sender,
-            DependencyPropertyChangedEventArgs e) {
+        private static void OnPasswordPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             PasswordBox passwordBox = sender as PasswordBox;
             passwordBox.PasswordChanged -= PasswordChanged;
 
-            if(!(bool) GetIsUpdating(passwordBox)) {
+            if(!GetIsUpdating(passwordBox)) {
                 passwordBox.Password = (string) e.NewValue;
             }
             passwordBox.PasswordChanged += PasswordChanged;
         }
 
-        private static void Attach(DependencyObject sender,
-            DependencyPropertyChangedEventArgs e) {
-            PasswordBox passwordBox = sender as PasswordBox;
-
-            if(passwordBox == null)
+        private static void Attach(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if(!(sender is PasswordBox passwordBox))
                 return;
 
             if((bool) e.OldValue) {
@@ -70,10 +66,14 @@ namespace MagicMine_Launcher.Components {
         }
 
         private static void PasswordChanged(object sender, RoutedEventArgs e) {
-            PasswordBox passwordBox = sender as PasswordBox;
-            SetIsUpdating(passwordBox, true);
-            SetPassword(passwordBox, passwordBox.Password);
-            SetIsUpdating(passwordBox, false);
+            if((sender is PasswordBox passwordBox) && passwordBox.IsFocused) {
+                if(string.IsNullOrWhiteSpace(passwordBox.Password))
+                    passwordBox.Password = string.Empty;
+
+                SetIsUpdating(passwordBox, true);
+                SetPassword(passwordBox, passwordBox.Password);
+                SetIsUpdating(passwordBox, false);
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using MagicMine_Launcher.Components;
 using MagicMine_Launcher.View.Pages;
 
 namespace MagicMine_Launcher.ViewModel.Pages {
@@ -30,13 +31,12 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 					case "UserName":
 						if(string.IsNullOrWhiteSpace(UserName)) {
 							error = "Username field must not be empty";
-							UserName = "";
+							UserName = string.Empty;
 						}
 						break;
 					case "Password":
 						if(string.IsNullOrWhiteSpace(Password)) {
 							error = "Password field must not be empty";
-							Password = "";
 						}
 						break;
 				}
