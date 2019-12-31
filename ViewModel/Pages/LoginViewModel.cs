@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using MagicMine_Launcher.Components;
 using MagicMine_Launcher.View.Pages;
 
@@ -22,8 +23,13 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 			set => Set(ref password, value, nameof(Password));
 		}
 
-		public string Error => throw new NotImplementedException();
+		private bool isAuthProcessing;
+		public bool IsAuthProcessing {
+			get => isAuthProcessing;
+			set => Set(ref isAuthProcessing, value, nameof(IsAuthProcessing));
+		}
 
+		public string Error => string.Empty;
 		public string this[string columnName] {
 			get {
 				string error = string.Empty;
@@ -37,11 +43,26 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 					case "Password":
 						if(string.IsNullOrWhiteSpace(Password)) {
 							error = "Password field must not be empty";
+							break;
+						}
+						if(!Password.Any(char.IsUpper) & !Password.Any(char.IsDigit) & !Password.Any(char.IsSymbol)) {
+							error = "Password field doesn't match mojang account rules";
 						}
 						break;
 				}
 				return error;
 			}
+		}
+
+		public ICommand ProcessAuthCommand { get; set; }
+
+		public LoginViewModel() {
+			ProcessAuthCommand = new RelayCommand(ProcessAuth);
+		}
+
+		private void ProcessAuth(object obj) {
+			if(string.IsNullOrEmpty(this[nameof(UserName)]) & this[nameof(Password)] != "Password field must not be empty")
+				IsAuthProcessing = true;
 		}
 	}
 }

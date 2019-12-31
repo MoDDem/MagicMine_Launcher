@@ -13,9 +13,13 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <TextBlock Text="Sign in" Foreground="#fff" TextAlignment="Center" FontSize="26" Padding="0, 2" Background="#00adb5" Grid.Row="0"/>
-        <Border Grid.Row="1" Padding="0, 5" Background="#232931">
+        <Border Grid.Row="1" Padding="0, 5" Background="#232931" Validation.ValidationAdornerSite="{Binding ElementName=ErrorList}">
+            <FrameworkElement.BindingGroup>
+                <BindingGroup Name="FormBindingGroup" />
+            </FrameworkElement.BindingGroup>
             <StackPanel Orientation="Vertical">
                 <Label Content="User Name or Email" Foreground="LightGray" Margin="0, -25.6, 0, 0" IsHitTestVisible="False" Panel.ZIndex="2" Background="Transparent" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left">
                     <Label.RenderTransform>
@@ -34,7 +38,7 @@
                         </Style>
                     </Label.Style>
                 </Label>
-                <TextBox Name="UserNameBox" Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Background="#393e46" Foreground="LightGray" Margin="10, 10, 10, 0" Padding="2, 8">
+                <TextBox Name="UserNameBox" Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, BindingGroupName=FormBindingGroup}" Background="#393e46" Foreground="LightGray" Margin="10, 10, 10, 0" Padding="2, 8">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
@@ -47,7 +51,7 @@
                     </TextBox.Style>
                 </TextBox>
 
-                <!--A little of shit-code here. Close your eyes and pass it by if u not ready for this-->
+                <!--Forgot to remove comments here, but i'm happy u dont see this super-puper-shit-code.-->
                 <Label Content="User Password" Foreground="LightGray" IsHitTestVisible="False" Panel.ZIndex="2" Background="Transparent" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left">
                     <Label.RenderTransform>
                         <TransformGroup>
@@ -56,17 +60,17 @@
                     </Label.RenderTransform>
                     <Label.Style>
                         <Style TargetType="Label">
-                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="Visibility" Value="Hidden"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=PasswordHolder, Path=(Validation.HasError)}" Value="False">
-                                    <Setter Property="Visibility" Value="Hidden"/>
+                                <DataTrigger Binding="{Binding ElementName=PasswordHolder, Path=(Validation.Errors)[0].ErrorContent}" Value="Password field must not be empty">
+                                    <Setter Property="Visibility" Value="Visible"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </Label.Style>
                 </Label>
 
-                <PasswordBox x:Name="PasswordHolder" pd:PasswordHelper.Attach="True" pd:PasswordHelper.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Background="#393e46" Foreground="LightGray" Margin="10, -10, 10, 5" Padding="2, 8">
+                <PasswordBox x:Name="PasswordHolder" pd:PasswordHelper.Attach="True" pd:PasswordHelper.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, BindingGroupName=FormBindingGroup}" Background="#393e46" Foreground="LightGray" Margin="10, -10, 10, 5" Padding="2, 8">
                     <PasswordBox.Style>
                         <Style TargetType="PasswordBox">
                             <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
@@ -78,9 +82,8 @@
                         </Style>
                     </PasswordBox.Style>
                 </PasswordBox>
-                <!--The end. Now u can open your eyes-->
-                
-                <Button Content="Login" Margin="10" Background="#393e46" Foreground="#eee" FontSize="18" Padding="2, 5"/>
+
+                <Button Content="Login" Command="{Binding ProcessAuthCommand}" Margin="10" Background="#393e46" Foreground="#eee" FontSize="18" Padding="2, 5"/>
                 <Grid Margin="10, 5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -91,7 +94,45 @@
                 </Grid>
             </StackPanel>
         </Border>
-        <TextBlock FontSize="18" TextAlignment="Center" Padding="0, 15, 0, 0" Height="auto" Background="#00adb5" Width="360" Grid.Row="2">
+
+        <ItemsControl Grid.Row="2" Padding="8, 0" FontSize="15" Background="#00adb5" BorderThickness="0" ItemsSource="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.ValidationAdornerSiteFor).(Validation.Errors)}" Name="ErrorList">
+            <ItemsControl.Style>
+                <Style TargetType="ItemsControl">
+                    <Setter Property="Validation.ErrorTemplate">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Border Background="Transparent"/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsAuthProcessing}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ItemsControl.Style>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Padding="0, 2" FontWeight="SemiBold" Foreground="#232931">
+                        <Run Text="&#8226;"/>
+                        <Run Text="{Binding ErrorContent}"/>
+                    </TextBlock>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <TextBlock FontSize="18" TextAlignment="Center" Padding="0, 15, 0, 0" Height="auto" Background="#00adb5" Width="360" Grid.Row="3">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsAuthProcessing}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
                 <Ellipse Width="15" Height="15" Fill="#232931" Margin="0, 0, 7, 0" RenderTransformOrigin="0.5,0.5">
                     <Ellipse.RenderTransform>
                         <TranslateTransform Y="0"/>
