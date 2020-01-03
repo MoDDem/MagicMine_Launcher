@@ -9,10 +9,12 @@ using System.Windows.Controls;
 
 namespace MagicMine_Launcher.ViewModel {
 	class MainViewModel : BaseVM {
-		public NavigationViewModel NavigationVM { get; }
+		public SettingsViewModel SettingsVM { get; set; }
+		public NavigationViewModel NavigationVM { get; set; }
 		public UserViewModel UserVM { get; set; }
 
 		public MainViewModel() {
+			SettingsVM = new SettingsViewModel();
 			NavigationVM = new NavigationViewModel();
 			UserVM = new UserViewModel();
 

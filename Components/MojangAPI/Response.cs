@@ -11,5 +11,9 @@ namespace MagicMine_Launcher.Components.MojangAPI {
 		public bool IsSuccess { get; internal set; }
 		public string RawMessage { get; internal set; }
 		public Error Error { get; internal set; }
+
+		public Response() {
+			Error = Error ?? new Error();
+		}
 	}
 }

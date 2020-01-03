@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using MagicMine_Launcher.Components;
+using MagicMine_Launcher.Components.MojangAPI;
+using MagicMine_Launcher.Components.MojangAPI.Requests;
 using MagicMine_Launcher.View.Pages;
 
 namespace MagicMine_Launcher.ViewModel.Pages {
@@ -45,7 +47,7 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 							error = "Password field must not be empty";
 							break;
 						}
-						if(!Password.Any(char.IsUpper) & !Password.Any(char.IsDigit) & !Password.Any(char.IsSymbol)) {
+						if(!Password.Any(char.IsUpper) & !Password.Any(char.IsDigit) & !Password.Any(char.IsPunctuation) & !Password.Any(char.IsControl)) {
 							error = "Password field doesn't match mojang account rules";
 						}
 						break;
@@ -60,9 +62,14 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 			ProcessAuthCommand = new RelayCommand(ProcessAuth);
 		}
 
-		private void ProcessAuth(object obj) {
+		private async void ProcessAuth(object obj) {
 			if(string.IsNullOrEmpty(this[nameof(UserName)]) & this[nameof(Password)] != "Password field must not be empty")
 				IsAuthProcessing = true;
+			else
+				return;
+
+			Response auth = await new AuthRequest(new Query(UserName, Password)).PerformRequest();
+			MessageBox.Show(auth.RawMessage);
 		}
 	}
 }

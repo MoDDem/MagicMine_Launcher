@@ -67,6 +67,13 @@ namespace MagicMine_Launcher.Model {
 			}
 		}
 
+		public UserModel[] GetUsers() {
+			return new[] {
+				new UserModel { Name = "Deficento", ID = "kdmsld2i1nsa23", AccessToken = "rnd", ClientToken = "rnd client token", IsValid = false, IsInGame = true },
+				new UserModel { Name = "MoDDem", ID = "dsakj213blasdx", AccessToken = "rnd", ClientToken = "rnd client token", IsValid = true, IsInGame = false }
+			};
+		}
+
 		public event PropertyChangedEventHandler PropertyChanged;
 		private void OnPropertyChanged([CallerMemberName]string propName = "") =>
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));

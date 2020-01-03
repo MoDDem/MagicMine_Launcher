@@ -12,6 +12,7 @@ using System.Windows.Input;
 
 namespace MagicMine_Launcher.ViewModel {
 	class UserViewModel : BaseVM {
+		private UserModel UserModel { get; set; }
 		public ObservableCollection<UserModel> Users { get; set; }
 
 		public ICommand UserListStateCommand { get; set; }
@@ -24,21 +25,17 @@ namespace MagicMine_Launcher.ViewModel {
 
 		private bool isUserListOpened;
 		public bool IsUserListOpened {
-			get { return isUserListOpened; }
-			set { 
-				Set(ref isUserListOpened, value, nameof(IsUserListOpened));
-			}
+			get => isUserListOpened;
+			set => Set(ref isUserListOpened, value, nameof(IsUserListOpened));
 		}
 
 		private void UserListState(object obj) => IsUserListOpened = Users.Count > 1 ? !IsUserListOpened : false;
 
 		public UserViewModel() {
-			UserListStateCommand = new RelayCommand(UserListState);
+			UserModel = new UserModel();
+			Users = new ObservableCollection<UserModel>(UserModel.GetUsers());
 
-			Users = new ObservableCollection<UserModel> {
-				new UserModel { Name = "Deficento", ID = "kdmsld2i1nsa23", AccessToken = "rnd", ClientToken = "rnd client token", IsValid = false, IsInGame = true },
-				new UserModel { Name = "MoDDem", ID = "dsakj213blasdx", AccessToken = "rnd", ClientToken = "rnd client token", IsValid = true, IsInGame = false }
-			};
+			UserListStateCommand = new RelayCommand(UserListState);
 		}
 	}
 }
