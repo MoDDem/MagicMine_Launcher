@@ -17,6 +17,9 @@
         <DataTemplate DataType="{x:Type pageVM:LoginViewModel}">
             <pageView:LoginView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type pageVM:SettingsViewModel}">
+            <pageView:SettingsView/>
+        </DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>

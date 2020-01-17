@@ -12,7 +12,9 @@ using MagicMine_Launcher.Components.MojangAPI.Requests;
 using MagicMine_Launcher.View.Pages;
 
 namespace MagicMine_Launcher.ViewModel.Pages {
-	class LoginViewModel : BaseVM, IDataErrorInfo {
+	class LoginViewModel : BaseVM, IDataErrorInfo, IPageViewModel {
+		public MainViewModel MainVM { get; set; }
+
 		private string username;
 		public string UserName {
 			get => username;

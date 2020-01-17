@@ -75,6 +75,8 @@
     <Compile Include="Model\SettingsModels\LauncherModel.cs" />
     <Compile Include="Model\SettingsModels\MinecraftModel.cs" />
     <Compile Include="Model\UserModel.cs" />
+    <Compile Include="ViewModel\Pages\IPageViewModel.cs" />
+    <Compile Include="ViewModel\Pages\SettingsViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
@@ -96,6 +98,9 @@
     <Compile Include="ViewModel\Pages\HomeViewModel.cs" />
     <Compile Include="ViewModel\Pages\LoginViewModel.cs" />
     <Compile Include="ViewModel\Pages\NavigationViewModel.cs" />
+    <Compile Include="View\Pages\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
     <Page Include="View\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -105,6 +110,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Pages\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Pages\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

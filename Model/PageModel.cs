@@ -11,7 +11,7 @@ namespace MagicMine_Launcher.Model {
 	class PageModel : INotifyPropertyChanged {
 		private int index;
 		private string title;
-		private object viewModel;
+		private IPageViewModel viewModel;
 		private bool isHidden;
 
 		public string Title {
@@ -28,7 +28,7 @@ namespace MagicMine_Launcher.Model {
 				OnPropertyChanged("Index");
 			}
 		}
-		public object ViewModel {
+		public IPageViewModel ViewModel {
 			get => viewModel; 
 			set {
 				viewModel = value;
@@ -52,7 +52,7 @@ namespace MagicMine_Launcher.Model {
 				new PageModel { Index = 2, Title = "CurseForge", },
 				new PageModel { Index = 3, Title = "ATLauncher", },
 				new PageModel { Index = 4, Title = "TechnicLauncher", },
-				new PageModel { Index = 5, Title = "Settings", },
+				new PageModel { Index = 5, Title = "Settings", ViewModel = new SettingsViewModel() },
 				new PageModel { Index = 6, Title = "Visit website", },
 			};
 		}

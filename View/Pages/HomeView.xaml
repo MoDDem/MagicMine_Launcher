@@ -58,10 +58,14 @@
         
         <WrapPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="0, 20, 0, 0">
             <Image Source="../../Graphics/Icons/pepeHands.png" Width="150"/>
-            <TextBlock Text="No installed instances yet" Foreground="#eee" FontSize="26" HorizontalAlignment="Center"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+            <TextBlock Foreground="#eee" FontSize="28" HorizontalAlignment="Center">
+                <Run Text="Hey,"/>
+                <Run Text="{Binding MainVM.UserVM.SelectedUser.Name}"/>
+            </TextBlock>
+            <TextBlock Text="Looks like you have no installed instances yet" Foreground="#eee" FontSize="24" HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="Install" Foreground="#eee" FontSize="18"/>
-                <Button Command="{Binding DataContext.NavigationVM.ChangeVMCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" CommandParameter="Vanilla" Content="Vanilla minecraft" Cursor="Hand">
+                <Button Command="{Binding MainVM.NavigationVM.ChangeVMCommand}" CommandParameter="Vanilla" Content="Vanilla minecraft" Cursor="Hand">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Template">

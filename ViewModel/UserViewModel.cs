@@ -12,7 +12,9 @@ using System.Windows.Input;
 
 namespace MagicMine_Launcher.ViewModel {
 	class UserViewModel : BaseVM {
+		private MainViewModel MainVM { get; set; }
 		private UserModel UserModel { get; set; }
+
 		public ObservableCollection<UserModel> Users { get; set; }
 
 		public ICommand UserListStateCommand { get; set; }
@@ -31,9 +33,12 @@ namespace MagicMine_Launcher.ViewModel {
 
 		private void UserListState(object obj) => IsUserListOpened = Users.Count > 1 ? !IsUserListOpened : false;
 
-		public UserViewModel() {
+		public UserViewModel(MainViewModel main) {
+			MainVM = main;
+
 			UserModel = new UserModel();
 			Users = new ObservableCollection<UserModel>(UserModel.GetUsers());
+			Users.All(a => { a.ClientToken = "a"; return true; });
 
 			UserListStateCommand = new RelayCommand(UserListState);
 		}

@@ -15,7 +15,7 @@ namespace MagicMine_Launcher.Model {
 		private bool isValid;
 		private bool isInGame;
 		private string accessToken;
-		private string clientToken;// from components
+		private string clientToken;// from settings
 
 		public string Name {
 			get { return name; }

@@ -1,25 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MagicMine_Launcher.Model.SettingsModels {
 	internal class LauncherModel : INotifyPropertyChanged {
-		private UserModel selectedUser;
 		private string clientToken;
 		private bool showConsole;
+		private string selectedUser;
 		private FoldersModel folders;
 
-		public UserModel SelectedUser {
-			get => selectedUser;
-			set {
-				selectedUser = value;
-				OnPropertyChanged("SelectedUser");
-			}
-		}
 		public string ClientToken {
 			get => clientToken;
 			set {
@@ -32,6 +20,13 @@ namespace MagicMine_Launcher.Model.SettingsModels {
 			set {
 				showConsole = value;
 				OnPropertyChanged("ShowConsole");
+			}
+		}
+		public string SelectedUser {
+			get => selectedUser;
+			set {
+				selectedUser = value;
+				OnPropertyChanged("SelectedUser");
 			}
 		}
 		public FoldersModel Folders {

@@ -16,8 +16,9 @@ namespace MagicMine_Launcher {
 		private new MainWindow MainWindow;
 
 		private void Application_Startup(object sender, StartupEventArgs e) {
-			var mainVM = new MainViewModel();
-			MainWindow = new MainWindow { DataContext = mainVM };
+			var main = new MainViewModel();
+
+			MainWindow = new MainWindow { DataContext = main };
 			MainWindow.Show();
 		}
 	}

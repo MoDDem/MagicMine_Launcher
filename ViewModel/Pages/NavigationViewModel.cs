@@ -1,28 +1,31 @@
 ﻿using MagicMine_Launcher.Components;
 using MagicMine_Launcher.Model;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 
 namespace MagicMine_Launcher.ViewModel.Pages {
 	class NavigationViewModel : BaseVM {
-		public ObservableCollection<PageModel> Pages { get; set; }
+		private MainViewModel MainVM { get; set; }
 		private PageModel PageModel { get; set; }
+
+		public ObservableCollection<PageModel> Pages { get; set; }
 
 		public ICommand ChangeVMCommand { get; set; }
 
 		private PageModel selectedPage;
 		public PageModel SelectedPage {
 			get => selectedPage;
-			set => Set(ref selectedPage, value, nameof(SelectedPage)); 
+			set { 
+				Set(ref selectedPage, value, nameof(SelectedPage));
+				if(selectedPage.ViewModel != null)
+					selectedPage.ViewModel.MainVM = MainVM;
+			}
 		}
 
-		public NavigationViewModel() {
+		public NavigationViewModel(MainViewModel main) {
+			MainVM = main;
+
 			PageModel = new PageModel();
 			Pages = new ObservableCollection<PageModel>(PageModel.GetPages());
 
