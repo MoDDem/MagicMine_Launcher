@@ -1,13 +1,15 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace MagicMine_Launcher.Model.SettingsModels {
-	class JavaModel : INotifyPropertyChanged {
+	class JavaModel : INotifyPropertyChanged, IDataErrorInfo {
 		private int minMemory;
 		private int maxMemory;
 		private string path;
@@ -39,6 +41,22 @@ namespace MagicMine_Launcher.Model.SettingsModels {
 			set {
 				args = value;
 				OnPropertyChanged("Args");
+			}
+		}
+
+		[JsonIgnore]
+		public string Error => string.Empty;
+
+		[JsonIgnore]
+		public string this[string columnName] {
+			get {
+				string error = string.Empty;
+
+				if(columnName == "MinMemory" | columnName == "MaxMemory") {
+					error = MinMemory >= MaxMemory ? "MinMemory can't be greater than MaxMemory" : error;
+				}
+
+				return error;
 			}
 		}
 

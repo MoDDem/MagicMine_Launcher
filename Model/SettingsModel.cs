@@ -1,7 +1,11 @@
 ﻿using MagicMine_Launcher.Model.SettingsModels;
 using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Windows;
 
 namespace MagicMine_Launcher.Model {
 	class SettingsModel : INotifyPropertyChanged {
@@ -9,37 +13,39 @@ namespace MagicMine_Launcher.Model {
 		private LauncherModel launcher;
 		private JavaModel java;
 
-		[JsonProperty("Minecraft")]
 		public MinecraftModel Minecraft {
 			get => minecraft;
 			set { 
-				minecraft = value; 
-				OnPropertyChanged("Minecraft"); 
+				minecraft = value;
+				Minecraft.PropertyChanged += (a, b) => OnPropertyChanged(nameof(Minecraft));
 			} 
 		}
 
-		[JsonProperty("Launcher")]
 		public LauncherModel Launcher {
 			get => launcher;
 			set { 
-				launcher = value; 
-				OnPropertyChanged("Launcher"); 
+				launcher = value;
+				Launcher.PropertyChanged += (a, b) => OnPropertyChanged(nameof(Launcher));
 			}
 		}
 
-		[JsonProperty("Java")]
 		public JavaModel Java {
 			get => java;
 			set { 
-				java = value; 
-				OnPropertyChanged("Java"); 
+				java = value;
+				Java.PropertyChanged += (a, b) => OnPropertyChanged(nameof(Java));
 			}
 		}
 
-		public SettingsModel(LauncherModel launcher, MinecraftModel minecraft, JavaModel java) {
-			Minecraft = minecraft;
-			Launcher = launcher;
-			Java = java;
+		[JsonIgnore]
+		public bool HasErrors {
+			get {
+				bool hasErrors = false;
+				if(!string.IsNullOrEmpty(Java[nameof(Java.MinMemory)]) | !string.IsNullOrEmpty(Java[nameof(Java.MaxMemory)]))
+					hasErrors = true;
+
+				return hasErrors;
+			}
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

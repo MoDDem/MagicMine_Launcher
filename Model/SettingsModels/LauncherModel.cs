@@ -33,7 +33,7 @@ namespace MagicMine_Launcher.Model.SettingsModels {
 			get => folders;
 			set {
 				folders = value;
-				OnPropertyChanged("Folders");
+				Folders.PropertyChanged += (a, b) => OnPropertyChanged(nameof(Folders));
 			}
 		}
 

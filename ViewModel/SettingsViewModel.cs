@@ -4,6 +4,7 @@ using MagicMine_Launcher.Model.SettingsModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,8 @@ namespace MagicMine_Launcher.ViewModel {
 	class SettingsViewModel : BaseVM {
 		private MainViewModel MainVM { get; set; }
 
+		private readonly string path = AppDomain.CurrentDomain.BaseDirectory + @"settings.json";
+
 		private SettingsModel settings;
 		public SettingsModel Settings {
 			get => settings;
@@ -22,27 +25,58 @@ namespace MagicMine_Launcher.ViewModel {
 			}
 		}
 
-		public ICommand SerializeJsonCommand { get; set; }
-
 		public SettingsViewModel(MainViewModel main) {
 			MainVM = main;
 
-			SerializeJsonCommand = new RelayCommand(SerializeJson);
+			CreateLoadSettingsFile();
 
-			LauncherModel launcher = new LauncherModel();
-			MinecraftModel minecraft = new MinecraftModel();
-			JavaModel java = new JavaModel();
-			Settings = new SettingsModel(launcher, minecraft, java);
-
-			Settings.Launcher.Folders = new FoldersModel {
-				Data = "data",
-				Graphics = "graphics",
-				Minecraft = "minecraft"
-			};
-
+			Settings.PropertyChanged += Settings_PropertyChanged;
 			MainVM.UserVM.PropertyChanged += (a, b) => Settings.Launcher.SelectedUser = MainVM.UserVM.SelectedUser.Name;
 		}
 
-		private void SerializeJson(object obj) => MessageBox.Show(JsonConvert.SerializeObject(Settings, Formatting.Indented));
+		private void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			if(Settings.HasErrors)
+				return;
+
+			File.WriteAllText(path, string.Empty);
+			using(FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
+				byte[] str = Encoding.Default.GetBytes(JsonConvert.SerializeObject(Settings, Formatting.Indented));
+				fs.Write(str, 0, str.Length);
+			}
+		}
+
+		private void CreateLoadSettingsFile() {
+			Settings = new SettingsModel {
+				Launcher = new LauncherModel {
+					ShowConsole = true,
+					ClientToken = Guid.NewGuid().ToString(),
+					Folders = new FoldersModel {
+						Data = AppDomain.CurrentDomain.BaseDirectory + "Data",
+						Graphics = AppDomain.CurrentDomain.BaseDirectory + "Graphics",
+						Minecraft = AppDomain.CurrentDomain.BaseDirectory + "Minecraft",
+					},
+					SelectedUser = MainVM.UserVM.SelectedUser.Name
+				},
+				Minecraft = new MinecraftModel {
+					Width = 1024,
+					Height = 768,
+					IsFullScreen = false
+				},
+				Java = new JavaModel {
+					Path = Directory.GetDirectories(@"C:\Program Files\Java\")[0] + @"\bin",
+					MinMemory = 256,
+					MaxMemory = 2048
+				}
+			};
+
+			if(File.Exists(path)) {
+				Settings = JsonConvert.DeserializeObject<SettingsModel>(File.ReadAllText(path));
+			} else {
+				using(FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
+					byte[] str = Encoding.Default.GetBytes(JsonConvert.SerializeObject(Settings, Formatting.Indented));
+					fs.Write(str, 0, str.Length);
+				}
+			}
+		}
 	}
 }
