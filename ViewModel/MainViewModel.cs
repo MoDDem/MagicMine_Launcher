@@ -1,24 +1,64 @@
 ﻿using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using MagicMine_Launcher.Components;
 using MagicMine_Launcher.ViewModel.Pages;
 
 namespace MagicMine_Launcher.ViewModel {
 	class MainViewModel : BaseVM {
-		public NavigationViewModel NavigationVM { get; set; }
-		public UserViewModel UserVM { get; set; }
-		public SettingsViewModel SettingsVM { get; set; }
+		private NavigationViewModel navigationVM;
+		public NavigationViewModel NavigationVM {
+			get => navigationVM;
+			set {
+				navigationVM = value;
+				NavigationVM.PropertyChanged += (a, b) => OnPropertyChanged(nameof(NavigationVM));
+			}
+		}
+
+		private UserViewModel userVM;
+		public UserViewModel UserVM {
+			get => userVM;
+			set {
+				userVM = value;
+				UserVM.PropertyChanged += (a, b) => OnPropertyChanged(nameof(UserVM));
+			}
+		}
+
+		private SettingsViewModel settingsVM;
+		public SettingsViewModel SettingsVM {
+			get => settingsVM;
+			set {
+				settingsVM = value;
+				SettingsVM.PropertyChanged += (a, b) => OnPropertyChanged(nameof(SettingsVM));
+			}
+		}
+
+		private RelayCommand openLoginPage;
+		public RelayCommand OpenLoginPage {
+			get {
+				return openLoginPage ??
+				  (openLoginPage = new RelayCommand(obj => {
+					  NavigationVM.ChangeVM(typeof(LoginViewModel));
+				  }));
+			}
+		}
 
 		public MainViewModel() {
 			NavigationVM = new NavigationViewModel(this);
-
 			UserVM = new UserViewModel(this);
-			if(UserVM.Users.Count > 0) {
-				UserVM.SelectedUser = UserVM.Users.First();
-				NavigationVM.SelectedPage = NavigationVM.Pages.SingleOrDefault(PageViewModel => PageViewModel.Title == "Home / Instances");
-			} else {
-				NavigationVM.SelectedPage = NavigationVM.Pages.SingleOrDefault(PageViewModel => PageViewModel.Title == "LoginPage");
-			}
-
 			SettingsVM = new SettingsViewModel(this);
+
+			Constructed?.Invoke();
+
+			if(UserVM.Users?.Count > 0) {
+				NavigationVM.ChangeVM(typeof(HomeViewModel));
+			} else {
+				NavigationVM.ChangeVM(typeof(LoginViewModel));
+				NavigationVM.BlockNavigation = true;
+			}
 		}
+
+		public delegate void ConstructorDelegate();
+		public event ConstructorDelegate Constructed;
 	}
 }

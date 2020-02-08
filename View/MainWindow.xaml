@@ -8,9 +8,11 @@
         xmlns:pageView="clr-namespace:MagicMine_Launcher.View.Pages"
         xmlns:pageVM="clr-namespace:MagicMine_Launcher.ViewModel.Pages" 
         xmlns:ViewModels="clr-namespace:MagicMine_Launcher.ViewModel" 
+        xmlns:components="clr-namespace:MagicMine_Launcher.Components"
         mc:Ignorable="d"
         Title="MagicMine Launcher" Height="480" Width="840" MinHeight="480" MinWidth="840">
     <Window.Resources>
+        <components:InverseBoolConverter x:Key="InverseBool"/>
         <DataTemplate DataType="{x:Type pageVM:HomeViewModel}">
             <pageView:HomeView/>
         </DataTemplate>
@@ -42,9 +44,19 @@
 
                 <Image Grid.RowSpan="2" Grid.Column="0" Width="50" Height="50"/>
 
-                <TextBlock Text="{Binding UserVM.SelectedUser.Name}" Grid.Row="0" Grid.Column="1" FontSize="18" VerticalAlignment="Bottom" Foreground="#eee"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" FontSize="18" VerticalAlignment="Bottom" Foreground="#eee">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Text" Value="{Binding UserVM.SelectedUser.Name}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding UserVM.SelectedUser}" Value="{x:Null}">
+                                    <Setter Property="Text" Value="Guest"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0, 0, 2, 0">
-                    <!--Invalid button color: #fa4252-->
                     <Button Margin="0, 0, 5, 0" Padding="8, 3" FontSize="14" Foreground="#232931" BorderThickness="0">
                         <Button.Style>
                             <Style TargetType="Button">
@@ -54,6 +66,11 @@
                                         <Setter Property="Content" Value="Valid"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding UserVM.SelectedUser.IsValid}" Value="False">
+                                        <Setter Property="Background" Value="#fa4252"/>
+                                        <Setter Property="Content" Value="Invalid"/>
+                                        <Setter Property="Command" Value="{Binding UserVM.ValidateUserCommand}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding UserVM.SelectedUser}" Value="{x:Null}">
                                         <Setter Property="Background" Value="#fa4252"/>
                                         <Setter Property="Content" Value="Invalid"/>
                                     </DataTrigger>
@@ -73,6 +90,10 @@
                                         <Setter Property="Foreground" Value="#eeeede"/>
                                         <Setter Property="Text" Value="Offline"/>
                                     </DataTrigger>
+                                    <DataTrigger Binding="{Binding UserVM.SelectedUser}" Value="{x:Null}">
+                                        <Setter Property="Foreground" Value="#eeeede"/>
+                                        <Setter Property="Text" Value="Offline"/>
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </TextBlock.Style>
@@ -84,8 +105,8 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Button Content="Add new" Command="{Binding NavigationVM.ChangeVMCommand}" CommandParameter="LoginPage" Grid.Row="0" Background="Transparent" Foreground="White" BorderThickness="0" Padding="3,0"/>
-                    <Button Content="Logout" Grid.Row="1" Background="Transparent" Foreground="White" BorderThickness="0" Padding="3,0"/>
+                    <Button Content="Add new" Command="{Binding OpenLoginPage}" Grid.Row="0" Background="Transparent" Foreground="White" BorderThickness="0" Padding="3,0"/>
+                    <Button Content="Logout" Command="{Binding UserVM.LogoutUserCommand}" Grid.Row="1" Background="Transparent" Foreground="White" BorderThickness="0" Padding="3,0"/>
                 </Grid>
                 <StackPanel Grid.Row="3" Grid.ColumnSpan="3" Orientation="Vertical" x:Name="AuthUserList" MinWidth="180" SizeChanged="AuthUserList_SizeChanged">
                     <StackPanel.Style>
@@ -127,7 +148,7 @@
                                         <RowDefinition Height="2"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0" FontSize="18" Foreground="#eee" Text="{Binding Name}"/>
-                                    <TextBlock Grid.Row="1" FontSize="14" Foreground="#eee" Text="{Binding ID}"/>
+                                    <TextBlock Grid.Row="1" FontSize="14" Foreground="#eee" Text="{Binding ID}" MaxWidth="100"/>
                                 </Grid>
                                 <DataTemplate.Triggers>
                                     <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}" Value="True">
@@ -171,6 +192,8 @@
                             <Setter Property="Padding" Value="0"/>
                             <Setter Property="Cursor" Value="Hand"/>
                             <Setter Property="BorderThickness" Value="0, 0, 0, 1"/>
+                            <Setter Property="Foreground" Value="#eee"/>
+                            <Setter Property="Focusable" Value="{Binding DataContext.BlockNavigation, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}, Converter={StaticResource InverseBool}}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsHidden}" Value="True">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -180,13 +203,13 @@
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Grid Background="#232931">
+                            <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="2"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Padding="2" FontSize="18" Foreground="#eee" Text="{Binding Title}"/>
+                                <TextBlock Grid.Row="0" Padding="2" FontSize="18" Text="{Binding Title}"/>
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -195,7 +218,6 @@
                 <StackPanel Orientation="Vertical">
                     <Line X1="0" Y1="0" X2="120" Y2="0" Stroke="#eee" StrokeThickness="3" Margin="0, 5, 0, 2" HorizontalAlignment="Center"/>
                     <TextBlock Text="MagicMine Launcher" FontSize="16" Foreground="#eee" HorizontalAlignment="Center"/>
-                    <TextBlock Text="Version: 0.0.0.2a" FontSize="16" Foreground="#eee" HorizontalAlignment="Center"/>
                     <TextBlock Text="Made by: MoDDem" FontSize="16" Foreground="#eee" HorizontalAlignment="Center"/>
                     <TextBlock Text="Copyright© 2019-2020" FontSize="16" Foreground="#eee" HorizontalAlignment="Center"/>
                 </StackPanel>

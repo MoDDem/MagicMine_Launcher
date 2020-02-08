@@ -5,7 +5,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     x:Class="MagicMine_Launcher.View.Pages.HomeView"
     mc:Ignorable="d" 
+    xmlns:components="clr-namespace:MagicMine_Launcher.Components"
     d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <components:InverseBoolConverter x:Key="InverseBool"/>
+    </UserControl.Resources>
     <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
         <Grid Background="#232931" Margin="0, 0, 0, 5" Visibility="Collapsed">
             <Grid.ColumnDefinitions>
@@ -62,12 +66,13 @@
                 <Run Text="Hey,"/>
                 <Run Text="{Binding MainVM.UserVM.SelectedUser.Name}"/>
             </TextBlock>
-            <TextBlock Text="Looks like you have no installed instances yet" Foreground="#eee" FontSize="24" HorizontalAlignment="Center"/>
+            <TextBlock Text="It looks like you haven't installed instances yet" Foreground="#eee" FontSize="24" HorizontalAlignment="Center"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="Install" Foreground="#eee" FontSize="18"/>
-                <Button Command="{Binding MainVM.NavigationVM.ChangeVMCommand}" CommandParameter="Vanilla" Content="Vanilla minecraft" Cursor="Hand">
+                <Button Command="{Binding OpenVanillaPage}" Content="Vanilla minecraft" Cursor="Hand">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
+                            <Setter Property="IsEnabled" Value="{Binding MainVM.NavigationVM.BlockNavigation, Converter={StaticResource InverseBool}}"/>
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type Button}">

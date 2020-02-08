@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -15,7 +16,6 @@ namespace MagicMine_Launcher.Model {
 		private bool isValid;
 		private bool isInGame;
 		private string accessToken;
-		private string clientToken;// from settings
 
 		public string Name {
 			get { return name; }
@@ -31,6 +31,7 @@ namespace MagicMine_Launcher.Model {
 				OnPropertyChanged("ID");
 			}
 		}
+		[JsonIgnore]
 		public bool IsValid {
 			get { return isValid; }
 			set {
@@ -38,6 +39,7 @@ namespace MagicMine_Launcher.Model {
 				OnPropertyChanged("IsValid");
 			}
 		}
+		[JsonIgnore]
 		public bool IsInGame {
 			get { return isInGame; }
 			set {
@@ -58,20 +60,6 @@ namespace MagicMine_Launcher.Model {
 				accessToken = value;
 				OnPropertyChanged("AccessToken");
 			}
-		}
-		public string ClientToken {
-			get { return clientToken; }
-			set {
-				clientToken = value;
-				OnPropertyChanged("ClientToken");
-			}
-		}
-
-		public UserModel[] GetUsers() {
-			return new[] {
-				new UserModel { Name = "Deficento", ID = "kdmsld2i1nsa23", AccessToken = "rnd", ClientToken = "rnd client token", IsValid = false, IsInGame = true },
-				new UserModel { Name = "MoDDem", ID = "dsakj213blasdx", AccessToken = "rnd", ClientToken = "rnd client token", IsValid = true, IsInGame = false }
-			};
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

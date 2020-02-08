@@ -90,7 +90,7 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <CheckBox Content="Remember me" Foreground="#eee" IsChecked="True" Padding="2, 5" VerticalContentAlignment="Center" Grid.Column="0" HorizontalAlignment="Left"/>
-                    <Button Content="Forgot Password?" Grid.Column="1" HorizontalAlignment="Right" Background="#393e46" Foreground="#eee" Padding="5, 5"/>
+                    <Button Content="Forgot Password?" Command="{Binding ForgotPassCommand}" Grid.Column="1" HorizontalAlignment="Right" Background="#393e46" Foreground="#eee" Padding="5, 5"/>
                 </Grid>
             </StackPanel>
         </Border>

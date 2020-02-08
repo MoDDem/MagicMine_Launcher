@@ -31,7 +31,7 @@ namespace MagicMine_Launcher.ViewModel {
 			CreateLoadSettingsFile();
 
 			Settings.PropertyChanged += Settings_PropertyChanged;
-			MainVM.UserVM.PropertyChanged += (a, b) => Settings.Launcher.SelectedUser = MainVM.UserVM.SelectedUser.Name;
+			MainVM.UserVM.PropertyChanged += (a, b) => Settings.Launcher.SelectedUser = MainVM.UserVM.SelectedUser.ID?.Substring(0, 10);
 		}
 
 		private void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
@@ -55,7 +55,7 @@ namespace MagicMine_Launcher.ViewModel {
 						Graphics = AppDomain.CurrentDomain.BaseDirectory + "Graphics",
 						Minecraft = AppDomain.CurrentDomain.BaseDirectory + "Minecraft",
 					},
-					SelectedUser = MainVM.UserVM.SelectedUser.Name
+					SelectedUser = MainVM.UserVM.SelectedUser?.ID?.Substring(0, 10)
 				},
 				Minecraft = new MinecraftModel {
 					Width = 1024,

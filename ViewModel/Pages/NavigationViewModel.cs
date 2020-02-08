@@ -1,5 +1,6 @@
 ﻿using MagicMine_Launcher.Components;
 using MagicMine_Launcher.Model;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
@@ -11,15 +12,21 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 
 		public ObservableCollection<PageModel> Pages { get; set; }
 
-		public ICommand ChangeVMCommand { get; set; }
-
 		private PageModel selectedPage;
 		public PageModel SelectedPage {
 			get => selectedPage;
-			set { 
+			set {
 				Set(ref selectedPage, value, nameof(SelectedPage));
 				if(selectedPage.ViewModel != null)
 					selectedPage.ViewModel.MainVM = MainVM;
+			}
+		}
+
+		private bool blockNavigation;
+		public bool BlockNavigation {
+			get => blockNavigation;
+			set {
+				Set(ref blockNavigation, value, nameof(BlockNavigation));
 			}
 		}
 
@@ -28,13 +35,17 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 
 			PageModel = new PageModel();
 			Pages = new ObservableCollection<PageModel>(PageModel.GetPages());
-
-			ChangeVMCommand = new RelayCommand(ChangeVM);
 		}
 
-		private void ChangeVM(object obj) {
-			PageModel vm = Pages.SingleOrDefault(PageViewModel => PageViewModel.Title == obj.ToString());
-			SelectedPage = vm ?? Pages[0];
+		public void ChangeVM(Type obj) {
+			if(obj.GetInterface("IPageViewModel") == null)
+				throw new Exception("Not a page");
+
+			SelectedPage = Pages.SingleOrDefault(a => a.ViewModel?.GetType() == obj);
+		}
+
+		public T GetPageVM<T>() where T : class {
+			return (T) Pages.SingleOrDefault(a => a.ViewModel?.GetType() == typeof(T)).ViewModel;
 		}
 	}
 }

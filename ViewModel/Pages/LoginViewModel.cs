@@ -9,6 +9,7 @@ using System.Windows.Input;
 using MagicMine_Launcher.Components;
 using MagicMine_Launcher.Components.MojangAPI;
 using MagicMine_Launcher.Components.MojangAPI.Requests;
+using MagicMine_Launcher.Model;
 using MagicMine_Launcher.View.Pages;
 
 namespace MagicMine_Launcher.ViewModel.Pages {
@@ -58,20 +59,25 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 			}
 		}
 
+		public ICommand ForgotPassCommand { get; set; }
 		public ICommand ProcessAuthCommand { get; set; }
 
 		public LoginViewModel() {
+			ForgotPassCommand = new RelayCommand(ForgotPassword);
 			ProcessAuthCommand = new RelayCommand(ProcessAuth);
 		}
 
-		private async void ProcessAuth(object obj) {
+		private void ForgotPassword(object obj) {
+			System.Diagnostics.Process.Start("https://my.minecraft.net/ru-ru/password/forgot/");
+		}
+
+		private void ProcessAuth(object obj) {
 			if(string.IsNullOrEmpty(this[nameof(UserName)]) & this[nameof(Password)] != "Password field must not be empty")
 				IsAuthProcessing = true;
 			else
 				return;
 
-			Response auth = await new AuthRequest(new Query(UserName, Password)).PerformRequest();
-			MessageBox.Show(auth.RawMessage);
+			MainVM.UserVM.AuthUserCommand.Execute(null);
 		}
 	}
 }
