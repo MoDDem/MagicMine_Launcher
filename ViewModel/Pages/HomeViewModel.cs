@@ -11,10 +11,16 @@ namespace MagicMine_Launcher.ViewModel.Pages {
         public RelayCommand OpenVanillaPage {
             get {
                 return openVanillaPage ??
-                  (openVanillaPage = new RelayCommand(obj => {
-                      MainVM.NavigationVM.ChangeVM(typeof(SettingsViewModel));
-                  }));
+                    (openVanillaPage = new RelayCommand(obj => {
+                        MainVM.NavigationVM.ChangeVM(typeof(VanillaViewModel));
+                    }));
             }
         }
-	}
+
+        public HomeViewModel(MainViewModel mainVM) {
+            MainVM = mainVM;
+        }
+        public void PageOpened() { }
+        public void PageClosed() { }
+    }
 }

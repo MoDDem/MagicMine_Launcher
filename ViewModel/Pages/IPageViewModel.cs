@@ -7,5 +7,7 @@ using System.Threading.Tasks;
 namespace MagicMine_Launcher.ViewModel.Pages {
 	interface IPageViewModel {
 		MainViewModel MainVM { get; set; }
+		void PageOpened();
+		void PageClosed();
 	}
 }

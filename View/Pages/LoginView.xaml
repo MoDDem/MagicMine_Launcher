@@ -51,7 +51,6 @@
                     </TextBox.Style>
                 </TextBox>
 
-                <!--Forgot to remove comments here, but i'm happy u dont see this super-puper-shit-code.-->
                 <Label Content="User Password" Foreground="LightGray" IsHitTestVisible="False" Panel.ZIndex="2" Background="Transparent" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left">
                     <Label.RenderTransform>
                         <TransformGroup>

@@ -1,6 +1,7 @@
 ﻿using MagicMine_Launcher.Components;
 using MagicMine_Launcher.Model;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
@@ -16,9 +17,13 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 		public PageModel SelectedPage {
 			get => selectedPage;
 			set {
+				if(selectedPage != null)
+					selectedPage.ViewModel?.PageClosed();
+				
 				Set(ref selectedPage, value, nameof(SelectedPage));
-				if(selectedPage.ViewModel != null)
-					selectedPage.ViewModel.MainVM = MainVM;
+				
+				if(selectedPage != null)
+					selectedPage.ViewModel?.PageOpened();
 			}
 		}
 
@@ -34,7 +39,21 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 			MainVM = main;
 
 			PageModel = new PageModel();
-			Pages = new ObservableCollection<PageModel>(PageModel.GetPages());
+			Pages = new ObservableCollection<PageModel>(LoadPages());
+		}
+
+		private List<PageModel> LoadPages() {
+			return new List<PageModel>() {
+				new PageModel { IsHidden = true, Title = "LoginPage", ViewModel = new LoginViewModel(MainVM) },
+
+				new PageModel { Index = 0, Title = "Home / Instances", ViewModel = new HomeViewModel(MainVM) },
+				new PageModel { Index = 1, Title = "Vanilla", ViewModel = new VanillaViewModel(MainVM) },
+				new PageModel { Index = 2, Title = "CurseForge", },
+				new PageModel { Index = 3, Title = "ATLauncher", },
+				new PageModel { Index = 4, Title = "TechnicLauncher", },
+				new PageModel { Index = 5, Title = "Settings", ViewModel = new SettingsViewModel(MainVM) },
+				new PageModel { Index = 6, Title = "Visit website", },
+			};
 		}
 
 		public void ChangeVM(Type obj) {

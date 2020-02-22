@@ -29,8 +29,11 @@ namespace MagicMine_Launcher.ViewModel {
 
 		private UserModel selectedUser;
 		public UserModel SelectedUser {
-			get => selectedUser; 
-			set => Set(ref selectedUser, value, nameof(SelectedUser));
+			get => selectedUser;
+			set { 
+				Set(ref selectedUser, value, nameof(SelectedUser));
+				CheckIfValid(SelectedUser);
+			}
 		}
 
 		private bool isUserListOpened;
@@ -67,13 +70,17 @@ namespace MagicMine_Launcher.ViewModel {
 			if(SelectedUser == null & userList.Count > 0)
 				SelectedUser = userList.First();
 
-			CheckIfValid(SelectedUser);
-
 			return userList;
 		}
 
-		private void CheckIfValid(UserModel user) { 
-			//
+		//test function
+		private void CheckIfValid(UserModel user) {
+			/*
+			string clientToken = MainVM.SettingsVM.Settings.Launcher.ClientToken;
+			
+			Response validate = await new ValidateRequest(user.AccessToken, clientToken).PerformRequest();
+			*/
+			user.IsValid = true;
 		}
 
 		private void UserListState(object obj) => IsUserListOpened = Users?.Count > 1 ? !IsUserListOpened : false;
@@ -112,10 +119,6 @@ namespace MagicMine_Launcher.ViewModel {
 			} else {
 				name = login.UserName;
 				password = login.Password;
-
-				login.UserName = null;
-				login.Password = null;
-				login.IsAuthProcessing = false;
 			}
 
 			Response auth = await new AuthRequest(name, password, clientToken).PerformRequest();
@@ -137,6 +140,10 @@ namespace MagicMine_Launcher.ViewModel {
 				MainVM.NavigationVM.BlockNavigation = false;
 				MainVM.NavigationVM.ChangeVM(typeof(HomeViewModel));
 			}
+
+			login.UserName = null;
+			login.Password = null;
+			login.IsAuthProcessing = false;
 		}
 
 		private void SaveUserData(UserModel user) {

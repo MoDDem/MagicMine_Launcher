@@ -44,64 +44,56 @@
             </TabControl.Resources>
             <TabItem Header="Launcher settings">
                 <TabItem.Content>
-                    <Grid Margin="10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Orientation="Vertical" Grid.Column="0">
-                            <Grid Margin="0, 5, 10, 15">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
+                    <StackPanel Orientation="Vertical" Grid.Column="0" Margin="10, 0, 0, 0">
+                        <Grid Margin="0, 5, 10, 15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
 
-                                <Label Content="Minecraft Folder" Grid.Column="0" Grid.Row="0" Foreground="#eee" FontSize="16" Padding="0"/>
-                                <TextBox Text="{Binding MainVM.SettingsVM.Settings.Launcher.Folders.Minecraft, Mode=TwoWay}" Grid.Column="0" Grid.Row="1" Background="#393e46" Foreground="LightGray" Padding="2, 8"/>
-                                <Button Content="Locate" Grid.Column="1" Grid.Row="1" Margin="10, 0, 0, 0" Padding="8, 2"/>
-                            </Grid>
+                            <Label Content="Minecraft Folder" Grid.Column="0" Grid.Row="0" Foreground="#eee" FontSize="16" Padding="0"/>
+                            <TextBox Text="{Binding MainVM.SettingsVM.Settings.Launcher.Folders.Minecraft, Mode=TwoWay}" Grid.Column="0" Grid.Row="1" Background="#393e46" Foreground="LightGray" Padding="2, 8"/>
+                            <Button Content="Locate" Grid.Column="1" Grid.Row="1" Margin="10, 0, 0, 0" Padding="8, 2"/>
+                        </Grid>
 
-                            <Grid Margin="0, 5, 10, 15">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <Label Content="Data Folder" Grid.Column="0" Grid.Row="0" Foreground="#eee" FontSize="16" Padding="0"/>
-                                <TextBox Text="{Binding MainVM.SettingsVM.Settings.Launcher.Folders.Data, Mode=TwoWay}" Grid.Column="0" Grid.Row="1" Background="#393e46" Foreground="LightGray" Padding="2, 8"/>
-                                <Button Content="Locate" Grid.Column="1" Grid.Row="1" Margin="10, 0, 0, 0" Padding="8, 2"/>
-                            </Grid>
+                        <Grid Margin="0, 5, 10, 15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Label Content="Data Folder" Grid.Column="0" Grid.Row="0" Foreground="#eee" FontSize="16" Padding="0"/>
+                            <TextBox Text="{Binding MainVM.SettingsVM.Settings.Launcher.Folders.Data, Mode=TwoWay}" Grid.Column="0" Grid.Row="1" Background="#393e46" Foreground="LightGray" Padding="2, 8"/>
+                            <Button Content="Locate" Grid.Column="1" Grid.Row="1" Margin="10, 0, 0, 0" Padding="8, 2"/>
+                        </Grid>
 
-                            <Grid Margin="0, 5, 10, 15">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                
-                                <Label Content="Graphics Folder" Grid.Column="0" Grid.Row="0" Foreground="#eee" FontSize="16" Padding="0"/>
-                                <TextBox Text="{Binding MainVM.SettingsVM.Settings.Launcher.Folders.Graphics, Mode=TwoWay}" Grid.Column="0" Grid.Row="1" Background="#393e46" Foreground="LightGray" Padding="2, 8"/>
-                                <Button Content="Locate" Grid.Column="1" Grid.Row="1" Margin="10, 0, 0, 0" Padding="8, 2"/>
-                            </Grid>
-                            
-                            <CheckBox IsChecked="{Binding MainVM.SettingsVM.Settings.Launcher.ShowConsole}" Content="Show Console?" FontSize="18" VerticalContentAlignment="Center" Margin="0, 5" Foreground="#eee"/>
+                        <Grid Margin="0, 5, 10, 15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Label Content="Graphics Folder" Grid.Column="0" Grid.Row="0" Foreground="#eee" FontSize="16" Padding="0"/>
+                            <TextBox Text="{Binding MainVM.SettingsVM.Settings.Launcher.Folders.Graphics, Mode=TwoWay}" Grid.Column="0" Grid.Row="1" Background="#393e46" Foreground="LightGray" Padding="2, 8"/>
+                            <Button Content="Locate" Grid.Column="1" Grid.Row="1" Margin="10, 0, 0, 0" Padding="8, 2"/>
+                        </Grid>
+
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox IsChecked="{Binding MainVM.SettingsVM.Settings.Launcher.ShowConsole}" Content="Show Console?" FontSize="18" VerticalContentAlignment="Center" Margin="0, 5, 10, 5" Foreground="#eee"/>
+                            <CheckBox IsChecked="{Binding MainVM.SettingsVM.Settings.Launcher.HideConsoleOnQuit}" Content="Hide Console on exit minecraft?" FontSize="18" VerticalContentAlignment="Center" Margin="0, 5" Foreground="#eee"/>
                         </StackPanel>
-
-                        <StackPanel Grid.Column="1" DataContext="{Binding MainVM.UserVM}" Background="#232931" >
-                            <TextBlock Text="{Binding SelectedUser.Name}" FontSize="20" Padding="5, 0" TextAlignment="Center"/>
-                            <Rectangle Width="200" Height="250" Fill="Aqua" Name="UserSKin"/>
-                        </StackPanel>
-                    </Grid>
+                    </StackPanel>
                 </TabItem.Content>
             </TabItem>
             <TabItem Header="Minecraft settings">

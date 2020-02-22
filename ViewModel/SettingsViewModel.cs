@@ -1,15 +1,9 @@
-﻿using MagicMine_Launcher.Components;
-using MagicMine_Launcher.Model;
+﻿using MagicMine_Launcher.Model;
 using MagicMine_Launcher.Model.SettingsModels;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
 
 namespace MagicMine_Launcher.ViewModel {
 	class SettingsViewModel : BaseVM {
@@ -49,6 +43,7 @@ namespace MagicMine_Launcher.ViewModel {
 			Settings = new SettingsModel {
 				Launcher = new LauncherModel {
 					ShowConsole = true,
+					HideConsoleOnQuit = false,
 					ClientToken = Guid.NewGuid().ToString(),
 					Folders = new FoldersModel {
 						Data = AppDomain.CurrentDomain.BaseDirectory + "Data",
@@ -63,7 +58,7 @@ namespace MagicMine_Launcher.ViewModel {
 					IsFullScreen = false
 				},
 				Java = new JavaModel {
-					Path = Directory.GetDirectories(@"C:\Program Files\Java\")[0] + @"\bin",
+					Path = SearchForJava(),
 					MinMemory = 256,
 					MaxMemory = 2048
 				}
@@ -77,6 +72,24 @@ namespace MagicMine_Launcher.ViewModel {
 					fs.Write(str, 0, str.Length);
 				}
 			}
+		}
+
+		private string SearchForJava() {
+			string path = null;
+
+			var values = Environment.GetEnvironmentVariable("PATH");
+			foreach(var item in values.Split(Path.PathSeparator)) {
+				var fullPath = Path.Combine(item, "javaw.exe");
+				if(File.Exists(fullPath))
+					path = fullPath;
+			}
+
+			if(path == null) {
+				string[] dirs = Directory.GetDirectories(@"C:\Program Files\Java\");
+				return dirs.Length < 1 ? null : dirs[0] + @"\bin\javaw.exe";
+			}
+
+			return path;
 		}
 	}
 }

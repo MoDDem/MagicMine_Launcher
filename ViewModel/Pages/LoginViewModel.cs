@@ -62,10 +62,14 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 		public ICommand ForgotPassCommand { get; set; }
 		public ICommand ProcessAuthCommand { get; set; }
 
-		public LoginViewModel() {
+		public LoginViewModel(MainViewModel mainVM) {
+			MainVM = mainVM;
+
 			ForgotPassCommand = new RelayCommand(ForgotPassword);
 			ProcessAuthCommand = new RelayCommand(ProcessAuth);
 		}
+		public void PageOpened() { }
+		public void PageClosed() { }
 
 		private void ForgotPassword(object obj) {
 			System.Diagnostics.Process.Start("https://my.minecraft.net/ru-ru/password/forgot/");

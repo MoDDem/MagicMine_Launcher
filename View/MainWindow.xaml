@@ -22,6 +22,9 @@
         <DataTemplate DataType="{x:Type pageVM:SettingsViewModel}">
             <pageView:SettingsView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type pageVM:VanillaViewModel}">
+            <pageView:VanillaView/>
+        </DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -131,24 +134,32 @@
                             </Style.Resources>
                         </Style>
                     </StackPanel.Style>
-                    <ListBox BorderThickness="2, 2, 2, 0" BorderBrush="#4ecca3" Background="#232931" HorizontalContentAlignment="Stretch" ItemsSource="{Binding UserVM.Users}" SelectedItem="{Binding UserVM.SelectedUser}">
+                    <ListBox BorderThickness="2, 2, 2, 0" AlternationCount="2" BorderBrush="#4ecca3" Background="#232931" HorizontalContentAlignment="Stretch" ItemsSource="{Binding UserVM.Users}" SelectedItem="{Binding UserVM.SelectedUser}">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ListBoxItem}">
                                 <Setter Property="BorderThickness" Value="0"/>
                                 <Setter Property="Padding" Value="0"/>
                                 <Setter Property="Cursor" Value="Hand"/>
+                                <!--a: 232931  b: 393e46-->
+                                <Style.Triggers>
+                                    <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                        <Setter Property="Background" Value="#232931"></Setter>
+                                    </Trigger>
+                                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                        <Setter Property="Background" Value="#393e46"></Setter>
+                                    </Trigger>
+                                </Style.Triggers>
                             </Style>
                         </ListBox.ItemContainerStyle>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Grid Background="#232931">
+                                <Grid Background="Transparent">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="auto"/>
                                         <RowDefinition Height="2"/>
                                     </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" FontSize="18" Foreground="#eee" Text="{Binding Name}"/>
-                                    <TextBlock Grid.Row="1" FontSize="14" Foreground="#eee" Text="{Binding ID}" MaxWidth="100"/>
+                                    <TextBlock Grid.Row="0" FontSize="18" Foreground="#eee" Text="{Binding Name}" Margin="2, 15"/>
                                 </Grid>
                                 <DataTemplate.Triggers>
                                     <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=ListBoxItem}}" Value="True">

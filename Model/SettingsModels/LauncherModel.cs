@@ -5,6 +5,7 @@ namespace MagicMine_Launcher.Model.SettingsModels {
 	internal class LauncherModel : INotifyPropertyChanged {
 		private string clientToken;
 		private bool showConsole;
+		private bool hideConsoleOnQuit;
 		private string selectedUser;
 		private FoldersModel folders;
 
@@ -20,6 +21,13 @@ namespace MagicMine_Launcher.Model.SettingsModels {
 			set {
 				showConsole = value;
 				OnPropertyChanged("ShowConsole");
+			}
+		}
+		public bool HideConsoleOnQuit {
+			get => hideConsoleOnQuit;
+			set {
+				hideConsoleOnQuit = value;
+				OnPropertyChanged("HideConsoleOnQuit");
 			}
 		}
 		public string SelectedUser {

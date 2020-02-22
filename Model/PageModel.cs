@@ -43,20 +43,6 @@ namespace MagicMine_Launcher.Model {
 			}
 		}
 
-		public PageModel[] GetPages() {
-			return new[] {
-				new PageModel { Title = "LoginPage", IsHidden = true, ViewModel = new LoginViewModel() },
-
-				new PageModel { Index = 0, Title = "Home / Instances", ViewModel = new HomeViewModel() },
-				new PageModel { Index = 1, Title = "Vanilla" },
-				new PageModel { Index = 2, Title = "CurseForge", },
-				new PageModel { Index = 3, Title = "ATLauncher", },
-				new PageModel { Index = 4, Title = "TechnicLauncher", },
-				new PageModel { Index = 5, Title = "Settings", ViewModel = new SettingsViewModel() },
-				new PageModel { Index = 6, Title = "Visit website", },
-			};
-		}
-
 		public event PropertyChangedEventHandler PropertyChanged;
 		private void OnPropertyChanged([CallerMemberName]string propName = "") =>
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));

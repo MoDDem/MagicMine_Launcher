@@ -37,9 +37,9 @@ namespace MagicMine_Launcher.ViewModel {
 		public RelayCommand OpenLoginPage {
 			get {
 				return openLoginPage ??
-				  (openLoginPage = new RelayCommand(obj => {
-					  NavigationVM.ChangeVM(typeof(LoginViewModel));
-				  }));
+					(openLoginPage = new RelayCommand(obj => {
+						NavigationVM.ChangeVM(typeof(LoginViewModel));
+					}));
 			}
 		}
 
