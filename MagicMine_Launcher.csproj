@@ -64,6 +64,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Components\BoolToVisibilityConverter.cs" />
     <Compile Include="Components\InverseBoolConverter.cs" />
     <Compile Include="Components\MojangAPI\Error.cs" />
     <Compile Include="Components\MojangAPI\Requests\AuthRequest.cs" />
@@ -163,6 +164,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Graphics\Fonts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Graphics\Icons\vanilla.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

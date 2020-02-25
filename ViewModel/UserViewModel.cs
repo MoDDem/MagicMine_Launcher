@@ -98,6 +98,9 @@ namespace MagicMine_Launcher.ViewModel {
 				return;
 			}
 
+			if(SelectedUser == null)
+				return;
+
 			string settingsPath = MainVM.SettingsVM.Settings.Launcher.Folders.Data + @"\Users\";
 			Directory.CreateDirectory(settingsPath);
 

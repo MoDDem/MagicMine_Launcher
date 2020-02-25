@@ -193,7 +193,7 @@
                         </Style>
                     </Label.Style>
                 </Label>
-                <TextBox Name="SearchBox" BorderThickness="0" Background="#393e46" Foreground="LightGray" Padding="2, 8" Width="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type WrapPanel}}}" VerticalContentAlignment="Center"/>
+                <TextBox Name="SearchBox" IsReadOnly="{Binding BlockNavigation}" BorderThickness="0" Background="#393e46" Foreground="LightGray" Padding="2, 8" Width="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type WrapPanel}}}" VerticalContentAlignment="Center"/>
             </WrapPanel>
 
             <DockPanel HorizontalAlignment="Stretch" DataContext="{Binding NavigationVM}">

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace MagicMine_Launcher.Model {
 	enum InstanceType {
@@ -14,7 +15,7 @@ namespace MagicMine_Launcher.Model {
 		private string version;
 		private string url;
 		private InstanceType type;
-		private Image image;
+		private BitmapImage image;
 
 		public string Title {
 			get => title;
@@ -44,7 +45,7 @@ namespace MagicMine_Launcher.Model {
 				OnPropertyChanged("Type");
 			}
 		}
-		public Image Image {
+		public BitmapImage Image {
 			get => image;
 			set {
 				image = value;
