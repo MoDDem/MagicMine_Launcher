@@ -25,6 +25,9 @@
         <DataTemplate DataType="{x:Type pageVM:VanillaViewModel}">
             <pageView:VanillaView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type pageVM:CurseForgeModel}">
+            <pageView:CurseForgeView/>
+        </DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>

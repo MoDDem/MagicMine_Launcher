@@ -9,12 +9,16 @@ namespace MagicMine_Launcher.Model {
 	enum InstanceType {
 		Release, Snapshot, Beta, Alpha, Modded
 	}
-
+	enum InstanceCategory {
+		AllModpacks, Tech, Magic, SciFi, Adventure, Exploration, MiniGame, Quests, Hardcore, 
+		MapBased, SmallModpack, ExtraLarge, Combat, Multiplayer, FTBOfficial, Skyblock
+	}
 	class InstanceModel : INotifyPropertyChanged {
 		private string title;
 		private string version;
 		private string url;
 		private InstanceType type;
+		private InstanceCategory[] category;
 		private BitmapImage image;
 
 		public string Title {
@@ -43,6 +47,13 @@ namespace MagicMine_Launcher.Model {
 			set {
 				type = value;
 				OnPropertyChanged("Type");
+			}
+		}
+		public InstanceCategory[] Category {
+			get => category;
+			set {
+				category = value;
+				OnPropertyChanged("Category");
 			}
 		}
 		public BitmapImage Image {

@@ -1,19 +1,13 @@
-﻿using MagicMine_Launcher.Components;
+﻿using System;
+using System.Reflection;
+using System.Threading.Tasks;
+using MagicMine_Launcher.Model;
+using System.Collections.Generic;
+using System.Windows.Media.Imaging;
+using MagicMine_Launcher.Components;
+using System.Collections.ObjectModel;
 using MagicMine_Launcher.Components.MojangAPI;
 using MagicMine_Launcher.Components.MojangAPI.Requests;
-using MagicMine_Launcher.Model;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media.Imaging;
 
 namespace MagicMine_Launcher.ViewModel.Pages {
 	class VanillaViewModel : BaseVM, IPageViewModel {
@@ -92,6 +86,7 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 										break;
 								}
 							}
+
 							foreach(var item in Instances) {
 								if(categories.Contains(item.Type.ToString())) {
 									if(SortedInstances.Contains(item))
@@ -124,15 +119,46 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 			isClosing = false;
 			LoadInstances(0);
 		}
-		public void PageClosed() { isClosing = true; }
+		public void PageClosed() { 
+			isClosing = true; 
+			SortedInstances.Clear();
+			Instances.Clear();
+		}
 
 		private async void LoadInstances(int attempt) {
-			Instances.Clear();
 			SortedInstances.Clear();
 			IsProcessing = true;
+			int i = 1;
 
 			if(attempt >= 3) {
 				IsProcessing = false;
+				return;
+			}
+
+			if(Instances.Count > 0) {
+				ProcessingStatus = "Building list of instances...";
+
+				foreach(var item in Instances) {
+					ProcessingStatus = $"Sorting instances: {i} of {Instances.Count}...";
+					i++;
+
+					if(categories.Contains(item.Type.ToString())) {
+						if(SortedInstances.Contains(item))
+							continue;
+
+						SortedInstances.Add(item);
+						await Task.Delay(20);
+					} else {
+						if(SortedInstances.Contains(item))
+							SortedInstances.Remove(item);
+					}
+				}
+
+				ProcessingStatus = "Done!";
+
+				await Task.Delay(100);
+				IsProcessing = false;
+
 				return;
 			}
 
@@ -164,7 +190,6 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 				LoadInstances(attempt);
 			}
 
-			int i = 1;
 			foreach(var item in Instances) {
 				ProcessingStatus = $"Sorting instances: {i} of {Instances.Count}...";
 				i++;

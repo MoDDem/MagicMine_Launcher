@@ -200,7 +200,7 @@
                                             </Style.Resources>
                                         </Style>
                                     </StackPanel.Style>
-                                    <Button Content="Play Instance"/>
+                                    <Button Content="Download Instance"/>
                                     <Button Content="Clone"/>
                                     <Button Content="Backup"/>
                                     <Button Content="Reinstall"/>
