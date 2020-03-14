@@ -25,7 +25,7 @@
         <DataTemplate DataType="{x:Type pageVM:VanillaViewModel}">
             <pageView:VanillaView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type pageVM:CurseForgeModel}">
+        <DataTemplate DataType="{x:Type pageVM:CurseForgeViewModel}">
             <pageView:CurseForgeView/>
         </DataTemplate>
     </Window.Resources>

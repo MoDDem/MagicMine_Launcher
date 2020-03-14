@@ -10,8 +10,9 @@ namespace MagicMine_Launcher.Model {
 		Release, Snapshot, Beta, Alpha, Modded
 	}
 	enum InstanceCategory {
-		AllModpacks, Tech, Magic, SciFi, Adventure, Exploration, MiniGame, Quests, Hardcore, 
-		MapBased, SmallModpack, ExtraLarge, Combat, Multiplayer, FTBOfficial, Skyblock
+		AllModpacks = 0, Tech = 4472, Magic = 4473, SciFi = 4471, Adventure = 4475, 
+		Exploration = 4476, MiniGame = 4477, Quests = 4478, Hardcore = 4479, MapBased = 4480, 
+		SmallModpack = 4481, ExtraLarge = 4482, Combat = 4483, Multiplayer = 4484, FTBOfficial = 4487, Skyblock = 4736
 	}
 	class InstanceModel : INotifyPropertyChanged {
 		private string title;

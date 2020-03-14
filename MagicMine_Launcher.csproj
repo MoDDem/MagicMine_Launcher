@@ -66,7 +66,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Components\BoolToVisibilityConverter.cs" />
+    <Compile Include="Components\IsEnumEqualsParameterConverter.cs" />
     <Compile Include="Components\InverseBoolConverter.cs" />
+    <Compile Include="Components\InvokeDelegateCommandAction.cs" />
     <Compile Include="Components\MojangAPI\Error.cs" />
     <Compile Include="Components\MojangAPI\Requests\AuthRequest.cs" />
     <Compile Include="Components\MojangAPI\Requests\CurseForgeRequest.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="Components\MojangAPI\Requests\ValidateRequest.cs" />
     <Compile Include="Components\MojangAPI\Requests\VersionsRequest.cs" />
     <Compile Include="Components\MojangAPI\Response.cs" />
+    <Compile Include="Components\MultiBindigConverter.cs" />
     <Compile Include="Components\PasswordHelper.cs" />
     <Compile Include="Model\InstanceModel.cs" />
     <Compile Include="Model\SettingsModel.cs" />
@@ -82,7 +85,7 @@
     <Compile Include="Model\SettingsModels\LauncherModel.cs" />
     <Compile Include="Model\SettingsModels\MinecraftModel.cs" />
     <Compile Include="Model\UserModel.cs" />
-    <Compile Include="ViewModel\Pages\CurseForgeModel.cs" />
+    <Compile Include="ViewModel\Pages\CurseForgeViewModel.cs" />
     <Compile Include="ViewModel\Pages\IPageViewModel.cs" />
     <Compile Include="ViewModel\Pages\SettingsViewModel.cs" />
     <Compile Include="ViewModel\Pages\VanillaViewModel.cs" />

@@ -5,11 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:local="clr-namespace:MagicMine_Launcher.View.Pages"
-             mc:Ignorable="d" 
              xmlns:components="clr-namespace:MagicMine_Launcher.Components"
+             xmlns:models="clr-namespace:MagicMine_Launcher.Model"
+             mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <components:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed"/>
+        <components:MultiBindigConverter x:Key="MultiBindigConverter"/>
+        <components:IsEnumEqualsParameterConverter x:Key="EnumToIsCheckedConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -24,59 +27,56 @@
                     <Setter Property="Padding" Value="0,4"/>
                 </Style>
             </Border.Style>
-            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <WrapPanel.Resources>
-                    <Style TargetType="ToggleButton">
-                        <Setter Property="Padding" Value="10, 5"/>
-                        <Setter Property="Margin" Value="0, 0, 5, 0"/>
-                        <Setter Property="BorderThickness" Value="0"/>
-                        <Setter Property="Cursor" Value="Hand"/>
-                    </Style>
-                </WrapPanel.Resources>
-                <ToggleButton Content="Not working now, but categories there"/>
-                <ToggleButton Content="Release" IsChecked="{Binding SelectedCategories[0], NotifyOnSourceUpdated=True, Mode=TwoWay}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <!--<TextBox Width="250" Margin="5, 0, 5, 0" Grid.Column="0" VerticalContentAlignment="Center"/>-->
+                <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" Grid.Column="1" Name="ScrollViewer">
+                    <!-- Lidl MVVM can sleep well now -->
                     <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Checked">
-                            <i:InvokeCommandAction Command="{Binding UpdateInstanceCategory}" CommandParameter="+Release"/>
-                        </i:EventTrigger>
-                        <i:EventTrigger EventName="Unchecked">
-                            <i:InvokeCommandAction Command="{Binding UpdateInstanceCategory}" CommandParameter="-Release"/>
+                        <i:EventTrigger EventName="PreviewMouseWheel">
+                            <components:InvokeDelegateCommandAction Command="{Binding CallCategoryScroll}" x:Name="ScrollDelegateCommandAction">
+                                <components:InvokeDelegateCommandAction.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource MultiBindigConverter}">
+                                        <Binding ElementName="ScrollViewer" Path="."/>
+                                        <Binding Path="InvokeParameter" ElementName="ScrollDelegateCommandAction"/>
+                                    </MultiBinding>
+                                </components:InvokeDelegateCommandAction.CommandParameter>
+                            </components:InvokeDelegateCommandAction>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                </ToggleButton>
-                <ToggleButton Content="Snapshot" IsChecked="{Binding SelectedCategories[1], NotifyOnSourceUpdated=True, Mode=TwoWay}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Checked">
-                            <i:InvokeCommandAction Command="{Binding UpdateInstanceCategory}" CommandParameter="+Snapshot"/>
-                        </i:EventTrigger>
-                        <i:EventTrigger EventName="Unchecked">
-                            <i:InvokeCommandAction Command="{Binding UpdateInstanceCategory}" CommandParameter="-Snapshot"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </ToggleButton>
-                <ToggleButton Content="Beta" IsChecked="{Binding SelectedCategories[2], NotifyOnSourceUpdated=True, Mode=TwoWay}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Checked">
-                            <i:InvokeCommandAction Command="{Binding UpdateInstanceCategory}" CommandParameter="+Beta"/>
-                        </i:EventTrigger>
-                        <i:EventTrigger EventName="Unchecked">
-                            <i:InvokeCommandAction Command="{Binding UpdateInstanceCategory}" CommandParameter="-Beta"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </ToggleButton>
-                <ToggleButton Content="Alpha" IsChecked="{Binding SelectedCategories[3], NotifyOnSourceUpdated=True, Mode=TwoWay}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Checked">
-                            <i:InvokeCommandAction Command="{Binding UpdateInstanceCategory}" CommandParameter="+Alpha"/>
-                        </i:EventTrigger>
-                        <i:EventTrigger EventName="Unchecked">
-                            <i:InvokeCommandAction Command="{Binding UpdateInstanceCategory}" CommandParameter="-Alpha"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </ToggleButton>
-            </WrapPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <Style TargetType="ToggleButton">
+                                <Setter Property="Padding" Value="10, 5"/>
+                                <Setter Property="Margin" Value="0, 0, 5, 0"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Cursor" Value="Hand"/>
+                            </Style>
+                        </StackPanel.Resources>
+                        <ToggleButton Content="All modpacks" IsChecked="{Binding SelectedCategory, Converter={StaticResource EnumToIsCheckedConverter}, ConverterParameter={x:Static models:InstanceCategory.AllModpacks}}" />
+                        <ToggleButton Content="Tech" IsChecked="{Binding SelectedCategory, Converter={StaticResource EnumToIsCheckedConverter}, ConverterParameter={x:Static models:InstanceCategory.Tech}}"/>
+                        <ToggleButton Content="Magic" IsChecked="{Binding SelectedCategory, Converter={StaticResource EnumToIsCheckedConverter}, ConverterParameter={x:Static models:InstanceCategory.Magic}}"/>
+                        <ToggleButton Content="Sci-Fi" IsChecked="{Binding SelectedCategory, Converter={StaticResource EnumToIsCheckedConverter}, ConverterParameter={x:Static models:InstanceCategory.SciFi}}"/>
+                        <ToggleButton Content="Adventure" IsChecked="{Binding SelectedCategory, Converter={StaticResource EnumToIsCheckedConverter}, ConverterParameter={x:Static models:InstanceCategory.Adventure}}"/>
+                        <ToggleButton Content="Exploration" IsChecked="{Binding SelectedCategory, Converter={StaticResource EnumToIsCheckedConverter}, ConverterParameter={x:Static models:InstanceCategory.Exploration}}"/>
+                        <ToggleButton Content="Mini Games" IsChecked="{Binding SelectedCategory, Converter={StaticResource EnumToIsCheckedConverter}, ConverterParameter={x:Static models:InstanceCategory.MiniGame}}"/>
+                        <ToggleButton Content="Quests" IsChecked="{Binding SelectedCategory, Converter={StaticResource EnumToIsCheckedConverter}, ConverterParameter={x:Static models:InstanceCategory.Quests}}"/>
+                        <ToggleButton Content="Hardcore" IsChecked="{Binding SelectedCategory, Converter={StaticResource EnumToIsCheckedConverter}, ConverterParameter={x:Static models:InstanceCategory.Hardcore}}"/>
+                        <ToggleButton Content="Map based" IsChecked="{Binding SelectedCategory, Converter={StaticResource EnumToIsCheckedConverter}, ConverterParameter={x:Static models:InstanceCategory.MapBased}}"/>
+                        <ToggleButton Content="Small modpack" IsChecked="{Binding SelectedCategory, Converter={StaticResource EnumToIsCheckedConverter}, ConverterParameter={x:Static models:InstanceCategory.SmallModpack}}"/>
+                        <ToggleButton Content="Extra large" IsChecked="{Binding SelectedCategory, Converter={StaticResource EnumToIsCheckedConverter}, ConverterParameter={x:Static models:InstanceCategory.ExtraLarge}}"/>
+                        <ToggleButton Content="Combat / PVP" IsChecked="{Binding SelectedCategory, Converter={StaticResource EnumToIsCheckedConverter}, ConverterParameter={x:Static models:InstanceCategory.Combat}}"/>
+                        <ToggleButton Content="Multiplayer" IsChecked="{Binding SelectedCategory, Converter={StaticResource EnumToIsCheckedConverter}, ConverterParameter={x:Static models:InstanceCategory.Multiplayer}}"/>
+                        <ToggleButton Content="FTB Official" IsChecked="{Binding SelectedCategory, Converter={StaticResource EnumToIsCheckedConverter}, ConverterParameter={x:Static models:InstanceCategory.FTBOfficial}}"/>
+                        <ToggleButton Content="Skyblock" IsChecked="{Binding SelectedCategory, Converter={StaticResource EnumToIsCheckedConverter}, ConverterParameter={x:Static models:InstanceCategory.Skyblock}}"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
         </Border>
-        <ScrollViewer HorizontalAlignment="Stretch" Grid.Row="1">
+        <ScrollViewer HorizontalAlignment="Stretch" Grid.Row="1" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="ScrollChanged">
                     <i:InvokeCommandAction Command="{Binding UpdateScrollViewer}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ScrollViewer}}"/>

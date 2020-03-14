@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MagicMine_Launcher.Model;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace MagicMine_Launcher.Components.MojangAPI.Requests {
 			public string SearchFilter { get; set; }
 
 			[JsonProperty("categoryId")]
-			public int CategoryId { get; set; }
+			public InstanceCategory CategoryId { get; set; }
 
 			[JsonProperty("gameVersion")]
 			public string GameVersion { get; set; }
@@ -41,7 +42,7 @@ namespace MagicMine_Launcher.Components.MojangAPI.Requests {
 		private Query query;
 
 		public async override Task<Response> PerformRequest() {
-			string url = $@"https://addons-ecs.forgesvc.net/api/v2/addon/search?categoryId=0&gameId=432&sectionId=4471&pageSize=20&categoryId={query.CategoryId}&index={query.Index}&sort={query.Sort}";
+			string url = $@"https://addons-ecs.forgesvc.net/api/v2/addon/search?gameId=432&sectionId=4471&pageSize=20&categoryId={(int)query.CategoryId}&index={query.Index}&sort={query.Sort}";
 			_ = query.SearchFilter != null ? url += "&searchFilter=" + query.SearchFilter : null;
 			_ = query.GameVersion != null ? url += "&gameVersion=" + query.GameVersion : null;
 
@@ -59,7 +60,7 @@ namespace MagicMine_Launcher.Components.MojangAPI.Requests {
 			};
 		}
 
-		public CurseForgeRequest(string search = null, string version = null, int category = 0, int index = 0, int sort = 1) => query = new Query { 
+		public CurseForgeRequest(string search = null, string version = null, InstanceCategory category = 0, int index = 0, int sort = 1) => query = new Query { 
 			SearchFilter = search,
 			GameVersion = version,
 			CategoryId = category,

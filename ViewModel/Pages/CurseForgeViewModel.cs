@@ -4,19 +4,15 @@ using MagicMine_Launcher.Components.MojangAPI.Requests;
 using MagicMine_Launcher.Model;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 namespace MagicMine_Launcher.ViewModel.Pages {
-	class CurseForgeModel : BaseVM, IPageViewModel {
+	class CurseForgeViewModel : BaseVM, IPageViewModel {
 		public MainViewModel MainVM { get; set; }
-		//TODO: category sorting(only one category can be selected)
 
 		private int index = 0;
 		
@@ -29,10 +25,10 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 			set => Set(ref canScrollTopOrBottom, value, nameof(CanScrollTopOrBottom));
 		}
 
-		private int bufferHeight;
-		public int BufferHeight {
-			get => bufferHeight;
-			set => Set(ref bufferHeight, value, nameof(BufferHeight));
+		private InstanceCategory selectedCategory;
+		public InstanceCategory SelectedCategory {
+			get => selectedCategory;
+			set => Set(ref selectedCategory, value, nameof(SelectedCategory));
 		}
 
 		private bool isProcessing;
@@ -45,6 +41,18 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 		public string ProcessingStatus {
 			get => processingStatus;
 			set => Set(ref processingStatus, value, nameof(ProcessingStatus));
+		}
+
+		private RelayCommand callCategoryScroll;
+		public RelayCommand CallCategoryScroll {
+			get {
+				return callCategoryScroll ?? (callCategoryScroll = new RelayCommand(obj => {
+					ScrollViewer scv = (obj as object[])[0] as ScrollViewer;
+
+					scv.ScrollToHorizontalOffset(scv.HorizontalOffset - ((obj as object[])[1] as System.Windows.Input.MouseWheelEventArgs).Delta);
+					((obj as object[])[1] as System.Windows.Input.MouseWheelEventArgs).Handled = true;
+				}));
+			}
 		}
 
 		private RelayCommand updateScrollViewer;
@@ -80,14 +88,26 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 			}
 		}
 
-		public CurseForgeModel(MainViewModel main) {
+		public CurseForgeViewModel(MainViewModel main) {
 			MainVM = main;
 			Instances = new ObservableCollection<InstanceModel>();
+			PropertyChanged += CurseForgeViewModel_PropertyChanged;
+		}
+
+		private void CurseForgeViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) { 
+			if(e.PropertyName == nameof(SelectedCategory)) {
+				Instances.Clear();
+				index = 0;
+				CanScrollTopOrBottom[0] = false;
+				CanScrollTopOrBottom[1] = true;
+				LoadInstances(0);
+			}
 		}
 
 		public void PageClosed() { Instances.Clear(); }
 		public void PageOpened() {
 			CanScrollTopOrBottom = new ObservableCollection<bool> { false, true };
+			SelectedCategory = InstanceCategory.AllModpacks;
 			LoadInstances(0);
 		}
 
@@ -95,9 +115,9 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 			IsProcessing = true;
 			int i = 1;
 
-			ProcessingStatus = "Retrieving versions from CurseForge...";
+			ProcessingStatus = $"Page {(index > 0 ? index/20 : 0)}. Retrieving versions from CurseForge...";
 
-			Response response = await new CurseForgeRequest(index: index).PerformRequest();
+			Response response = await new CurseForgeRequest(index: index, category: SelectedCategory).PerformRequest();
 			foreach(var item in response.Json["list"] as JArray) {
 				ProcessingStatus = $"Sorting instances: {i} of {Instances.Count}...";
 				i++;
