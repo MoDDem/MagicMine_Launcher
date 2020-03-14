@@ -28,6 +28,9 @@
         <DataTemplate DataType="{x:Type pageVM:CurseForgeViewModel}">
             <pageView:CurseForgeView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type pageVM:ATLauncherViewModel}">
+            <pageView:ATLauncherView/>
+        </DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>

@@ -49,7 +49,7 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 				new PageModel { Index = 0, Title = "Home / Instances", ViewModel = new HomeViewModel(MainVM) },
 				new PageModel { Index = 1, Title = "Vanilla", ViewModel = new VanillaViewModel(MainVM) },
 				new PageModel { Index = 2, Title = "CurseForge", ViewModel = new CurseForgeViewModel(MainVM) },
-				new PageModel { Index = 3, Title = "ATLauncher", },
+				new PageModel { Index = 3, Title = "ATLauncher", ViewModel = new ATLauncherViewModel(MainVM) },
 				new PageModel { Index = 4, Title = "TechnicLauncher", },
 				new PageModel { Index = 5, Title = "Settings", ViewModel = new SettingsViewModel(MainVM) },
 				new PageModel { Index = 6, Title = "Visit website", },

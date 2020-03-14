@@ -70,6 +70,7 @@
     <Compile Include="Components\InverseBoolConverter.cs" />
     <Compile Include="Components\InvokeDelegateCommandAction.cs" />
     <Compile Include="Components\MojangAPI\Error.cs" />
+    <Compile Include="Components\MojangAPI\Requests\ATLauncherRequest.cs" />
     <Compile Include="Components\MojangAPI\Requests\AuthRequest.cs" />
     <Compile Include="Components\MojangAPI\Requests\CurseForgeRequest.cs" />
     <Compile Include="Components\MojangAPI\Requests\Request.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Model\SettingsModels\LauncherModel.cs" />
     <Compile Include="Model\SettingsModels\MinecraftModel.cs" />
     <Compile Include="Model\UserModel.cs" />
+    <Compile Include="ViewModel\Pages\ATLauncherViewModel.cs" />
     <Compile Include="ViewModel\Pages\CurseForgeViewModel.cs" />
     <Compile Include="ViewModel\Pages\IPageViewModel.cs" />
     <Compile Include="ViewModel\Pages\SettingsViewModel.cs" />
@@ -93,6 +95,9 @@
     <Compile Include="ViewModel\UserViewModel.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Pages\ATLauncherView.xaml.cs">
+      <DependentUpon>ATLauncherView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Pages\CurseForgeView.xaml.cs">
       <DependentUpon>CurseForgeView.xaml</DependentUpon>
@@ -120,6 +125,10 @@
       <DependentUpon>VanillaView.xaml</DependentUpon>
     </Compile>
     <Page Include="View\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Pages\ATLauncherView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -180,6 +189,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Graphics\Icons\vanilla.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Graphics\Icons\ATLauncher.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -100,6 +101,7 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 				index = 0;
 				CanScrollTopOrBottom[0] = false;
 				CanScrollTopOrBottom[1] = true;
+
 				LoadInstances(0);
 			}
 		}
@@ -115,22 +117,35 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 			IsProcessing = true;
 			int i = 1;
 
+			if(attempt >= 3) {
+				IsProcessing = false;
+				return;
+			}
+
 			ProcessingStatus = $"Page {(index > 0 ? index/20 : 0)}. Retrieving versions from CurseForge...";
 
 			Response response = await new CurseForgeRequest(index: index, category: SelectedCategory).PerformRequest();
-			foreach(var item in response.Json["list"] as JArray) {
-				ProcessingStatus = $"Sorting instances: {i} of {Instances.Count}...";
-				i++;
+			if(response.IsSuccess) {
+				foreach(var item in response.Json["list"] as JArray) {
+					ProcessingStatus = $"Sorting instances: {i} of {response.Json["list"].Count()}...";
+					i++;
 
-				Instances.Add(new InstanceModel {
-					Title = item["name"].ToString(),
-					Url = item["latestFiles"][0]["downloadUrl"].ToString(),
-					Type = InstanceType.Modded,
-					Version = item["latestFiles"][0]["sortableGameVersion"][0]["gameVersion"].ToString(),
-					Image = new BitmapImage(new Uri(item["attachments"][0]["thumbnailUrl"].ToString()))
-				});
+					Instances.Add(new InstanceModel {
+						Title = item["name"].ToString(),
+						Url = item["latestFiles"][0]["downloadUrl"].ToString(),
+						Type = InstanceType.Modded,
+						Version = item["latestFiles"][0]["sortableGameVersion"][0]["gameVersion"].ToString(),
+						Image = new BitmapImage(new Uri(item["attachments"][0]["thumbnailUrl"].ToString()))
+					});
 
-				await Task.Delay(20);
+					await Task.Delay(20);
+				}
+			} else {
+				attempt++;
+				ProcessingStatus = $"Error while retrieving versions... Trying again: {attempt} of 3 attempts.";
+
+				await Task.Delay(5000);
+				LoadInstances(attempt);
 			}
 
 			ProcessingStatus = "Done!";

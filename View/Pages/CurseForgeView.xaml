@@ -168,7 +168,6 @@
                                                             </ControlTemplate>
                                                         </Setter.Value>
                                                     </Setter>
-                                                    <Setter Property="Command" Value="{Binding DataContext.UpdateInstanceCategory, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}}"/>
                                                     <Setter Property="Foreground" Value="#eee"/>
                                                     <Setter Property="FontSize" Value="17"/>
                                                     <Setter Property="BorderThickness" Value="0, 0, 0, 2"/>
