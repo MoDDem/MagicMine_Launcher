@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AngleSharp, Version=0.13.0.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
+      <HintPath>packages\AngleSharp.0.13.0\lib\net46\AngleSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
@@ -43,6 +46,12 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Runtime.CompilerServices.Unsafe.4.5.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encoding.CodePages, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Text.Encoding.CodePages.4.5.0\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
@@ -74,6 +83,7 @@
     <Compile Include="Components\MojangAPI\Requests\AuthRequest.cs" />
     <Compile Include="Components\MojangAPI\Requests\CurseForgeRequest.cs" />
     <Compile Include="Components\MojangAPI\Requests\Request.cs" />
+    <Compile Include="Components\MojangAPI\Requests\TechnicPackRequest.cs" />
     <Compile Include="Components\MojangAPI\Requests\ValidateRequest.cs" />
     <Compile Include="Components\MojangAPI\Requests\VersionsRequest.cs" />
     <Compile Include="Components\MojangAPI\Response.cs" />
@@ -90,9 +100,13 @@
     <Compile Include="ViewModel\Pages\CurseForgeViewModel.cs" />
     <Compile Include="ViewModel\Pages\IPageViewModel.cs" />
     <Compile Include="ViewModel\Pages\SettingsViewModel.cs" />
+    <Compile Include="ViewModel\Pages\TechnicPackViewModel.cs" />
     <Compile Include="ViewModel\Pages\VanillaViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
+    <Compile Include="View\JavaNotFound.xaml.cs">
+      <DependentUpon>JavaNotFound.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -121,9 +135,16 @@
     <Compile Include="View\Pages\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Pages\TechnicPackView.xaml.cs">
+      <DependentUpon>TechnicPackView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Pages\VanillaView.xaml.cs">
       <DependentUpon>VanillaView.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\JavaNotFound.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -145,6 +166,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Pages\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Pages\TechnicPackView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -192,6 +217,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Graphics\Icons\ATLauncher.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Graphics\Icons\TechnicPack.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

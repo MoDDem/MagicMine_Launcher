@@ -31,6 +31,9 @@
         <DataTemplate DataType="{x:Type pageVM:ATLauncherViewModel}">
             <pageView:ATLauncherView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type pageVM:TechnicPackViewModel}">
+            <pageView:TechnicPackView/>
+        </DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>

@@ -14,6 +14,10 @@ namespace MagicMine_Launcher.Model {
 		Exploration = 4476, MiniGame = 4477, Quests = 4478, Hardcore = 4479, MapBased = 4480, 
 		SmallModpack = 4481, ExtraLarge = 4482, Combat = 4483, Multiplayer = 4484, FTBOfficial = 4487, Skyblock = 4736
 	}
+	enum InstanceSort {
+		// for curseforge: popularity = trending, total downloads = popular 
+		Trending, Popular, Updated, New, Name
+	}
 	class InstanceModel : INotifyPropertyChanged {
 		private string title;
 		private string version;

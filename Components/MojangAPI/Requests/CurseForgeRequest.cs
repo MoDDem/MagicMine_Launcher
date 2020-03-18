@@ -22,7 +22,7 @@ namespace MagicMine_Launcher.Components.MojangAPI.Requests {
 			 * index - looks like it's a start index of instances
 			 * pageSize - i guess it's a how much instances will be recieved
 			 * sectionId - id of section. Like a modpacks(4471), maps, textures
-			 * sort - id of sorting ???? 1 - popularity & 3 - name
+			 * sort - id of sorting ???? 1 - popularity & 3 - name & 2 - last updated & total dwnlds = 5
 			*/
 			[JsonProperty("searchFilter")]
 			public string SearchFilter { get; set; }
@@ -37,12 +37,28 @@ namespace MagicMine_Launcher.Components.MojangAPI.Requests {
 			public int Index { get; set; }
 
 			[JsonProperty("sort")]
-			public int Sort { get; set; }
+			public InstanceSort Sort { get; set; }
 		}
 		private Query query;
 
 		public async override Task<Response> PerformRequest() {
-			string url = $@"https://addons-ecs.forgesvc.net/api/v2/addon/search?gameId=432&sectionId=4471&pageSize=20&categoryId={(int)query.CategoryId}&index={query.Index}&sort={query.Sort}";
+			int sortInt = 1;
+			switch(query.Sort) {
+				case InstanceSort.Trending:
+					sortInt = 1;
+					break;
+				case InstanceSort.Popular:
+					sortInt = 5;
+					break;
+				case InstanceSort.Updated:
+					sortInt = 2;
+					break;
+				case InstanceSort.Name:
+					sortInt = 3;
+					break;
+			}
+
+			string url = $@"https://addons-ecs.forgesvc.net/api/v2/addon/search?gameId=432&sectionId=4471&pageSize=20&categoryId={(int)query.CategoryId}&index={query.Index}&sort={sortInt}";
 			_ = query.SearchFilter != null ? url += "&searchFilter=" + query.SearchFilter : null;
 			_ = query.GameVersion != null ? url += "&gameVersion=" + query.GameVersion : null;
 
@@ -60,7 +76,7 @@ namespace MagicMine_Launcher.Components.MojangAPI.Requests {
 			};
 		}
 
-		public CurseForgeRequest(string search = null, string version = null, InstanceCategory category = 0, int index = 0, int sort = 1) => query = new Query { 
+		public CurseForgeRequest(string search = null, string version = null, InstanceCategory category = 0, int index = 0, InstanceSort sort = InstanceSort.Trending) => query = new Query { 
 			SearchFilter = search,
 			GameVersion = version,
 			CategoryId = category,

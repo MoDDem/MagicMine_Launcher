@@ -1,13 +1,18 @@
-﻿using MagicMine_Launcher.Model;
+﻿using MagicMine_Launcher.Components;
+using MagicMine_Launcher.Model;
 using MagicMine_Launcher.Model.SettingsModels;
+using MagicMine_Launcher.View;
 using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Text;
+using System.Windows.Forms;
 
 namespace MagicMine_Launcher.ViewModel {
 	class SettingsViewModel : BaseVM {
 		private MainViewModel MainVM { get; set; }
+
+		private JavaNotFound javaWindow;
 
 		private readonly string path = AppDomain.CurrentDomain.BaseDirectory + @"settings.json";
 
@@ -16,6 +21,66 @@ namespace MagicMine_Launcher.ViewModel {
 			get => settings;
 			set {
 				Set(ref settings, value, nameof(Settings));
+			}
+		}
+
+		private string javaPath;
+		public string JavaPath {
+			get => javaPath;
+			set {
+				Set(ref javaPath, value, nameof(JavaPath));
+			}
+		}
+
+		private RelayCommand locateJavaCommand;
+		public RelayCommand LocateJavaCommand {
+			get {
+				return locateJavaCommand ?? (locateJavaCommand = new RelayCommand(obj => {
+					using(var dialog = new FolderBrowserDialog()) {
+						dialog.ShowNewFolderButton = false;
+						DialogResult result = dialog.ShowDialog();
+						if(result == DialogResult.OK) {
+							JavaPath = dialog.SelectedPath;
+						}
+					}
+				}));
+			}
+		}
+
+		private RelayCommand assignSelectedPathCommand;
+		public RelayCommand AssignSelectedPathCommand {
+			get {
+				return assignSelectedPathCommand ?? (assignSelectedPathCommand = new RelayCommand(obj => {
+					if(JavaPath.Contains("jre")) {
+						JavaPath += JavaPath.EndsWith("\\") ? "lib\\javaw.exe" : "\\lib\\javaw.exe";
+					} else {
+						if(!File.Exists(JavaPath + "\\lib\\javaw.exe")) {
+							JavaPath = "Java not found. Please try again.";
+							return;
+						} else
+							JavaPath += JavaPath.EndsWith("\\") ? "lib\\javaw.exe" : "\\lib\\javaw.exe";
+					}
+					javaWindow.Close();
+				}));
+			}
+		}
+
+		private RelayCommand installJavaCommand;
+		public RelayCommand InstallJavaCommand {
+			get {
+				return installJavaCommand ?? (installJavaCommand = new RelayCommand(obj => {
+					//TODO: installation functionality
+					javaWindow.Close();
+				}));
+			}
+		}
+
+		private RelayCommand closeWindowCommand;
+		public RelayCommand CloseWindowCommand {
+			get {
+				return closeWindowCommand ?? (closeWindowCommand = new RelayCommand(obj => {
+					javaWindow.Close();
+				}));
 			}
 		}
 
@@ -75,21 +140,23 @@ namespace MagicMine_Launcher.ViewModel {
 		}
 
 		private string SearchForJava() {
-			string path = null;
-
 			var values = Environment.GetEnvironmentVariable("PATH");
 			foreach(var item in values.Split(Path.PathSeparator)) {
 				var fullPath = Path.Combine(item, "javaw.exe");
 				if(File.Exists(fullPath))
-					path = fullPath;
+					return fullPath;
 			}
 
-			if(path == null) {
-				string[] dirs = Directory.GetDirectories(@"C:\Program Files\Java\");
-				return dirs.Length < 1 ? null : dirs[0] + @"\bin\javaw.exe";
-			}
+			string[] dirs = Directory.GetDirectories(@"C:\Program Files\Java\");
+			if(dirs.Length > 0) 
+				return dirs[0] + @"\bin\javaw.exe";
 
-			return path;
+			javaWindow = new JavaNotFound {
+				DataContext = this
+			};
+			javaWindow.ShowDialog();
+
+			return !string.IsNullOrEmpty(JavaPath) ? JavaPath : null;
 		}
 	}
 }
