@@ -109,13 +109,13 @@
                                     <RowDefinition Height="30"/>
                                     <RowDefinition Height="40"/>
                                 </Grid.RowDefinitions>
-                                <Image Source="{Binding Image}" Grid.Column="0" Grid.RowSpan="3" Margin="0, 0, 0, 1"/>
+                                <Image Source="{Binding Instance.Image}" Grid.Column="0" Grid.RowSpan="3" Margin="0, 0, 0, 1"/>
 
-                                <TextBlock Text="{Binding Title}" Grid.Row="0" Grid.Column="1" FontSize="20" Foreground="#eee" VerticalAlignment="Bottom" Margin="5, 0, 0, 0"/>
+                                <TextBlock Text="{Binding Instance.Title}" Grid.Row="0" Grid.Column="1" FontSize="20" Foreground="#eee" VerticalAlignment="Bottom" Margin="5, 0, 0, 0"/>
 
                                 <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" Margin="5, 0, 0, 0">
                                     <TextBlock Text="Version:" FontSize="18" Foreground="#eee"/>
-                                    <Button Content="{Binding Version}" FontSize="18">
+                                    <Button Content="{Binding Instance.Version}" FontSize="18">
                                         <Button.Style>
                                             <Style TargetType="{x:Type Button}">
                                                 <Setter Property="Template">
@@ -143,7 +143,7 @@
                                     </Button>
 
                                     <TextBlock Text="Type:" FontSize="18" Foreground="#eee"/>
-                                    <Button Content="{Binding Type}" FontSize="18">
+                                    <Button Content="{Binding Instance.Type}" FontSize="18">
                                         <Button.Style>
                                             <Style TargetType="{x:Type Button}">
                                                 <Setter Property="Template">
@@ -166,16 +166,16 @@
                                                         <Setter Property="Foreground" Value="#00adb5"/>
                                                         <Setter Property="BorderThickness" Value="0"/>
                                                     </Trigger>
-                                                    <DataTrigger Binding="{Binding Type}" Value="Release">
+                                                    <DataTrigger Binding="{Binding Instance.Type}" Value="Release">
                                                         <Setter Property="CommandParameter" Value="*Release"/>
                                                     </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Type}" Value="Snapshot">
+                                                    <DataTrigger Binding="{Binding Instance.Type}" Value="Snapshot">
                                                         <Setter Property="CommandParameter" Value="*Snapshot"/>
                                                     </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Type}" Value="Beta">
+                                                    <DataTrigger Binding="{Binding Instance.Type}" Value="Beta">
                                                         <Setter Property="CommandParameter" Value="*Beta"/>
                                                     </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Type}" Value="Alpha">
+                                                    <DataTrigger Binding="{Binding Instance.Type}" Value="Alpha">
                                                         <Setter Property="CommandParameter" Value="*Alpha"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -200,7 +200,7 @@
                                             </Style.Resources>
                                         </Style>
                                     </StackPanel.Style>
-                                    <Button Content="Download Instance"/>
+                                    <Button Content="Download Instance" Command="{Binding DownloadInstanceCommand}"/>
                                     <Button Content="Clone"/>
                                     <Button Content="Backup"/>
                                     <Button Content="Reinstall"/>
@@ -214,10 +214,31 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
-        <Canvas Grid.RowSpan="2" Margin="-5" HorizontalAlignment="Stretch" Background="#000" Opacity=".85" Visibility="{Binding IsProcessing, Converter={StaticResource BoolToVisibilityConverter}}">
-            <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Canvas, Mode=FindAncestor}}" Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Canvas, Mode=FindAncestor}}">
+        <Canvas x:Name="LoadingCanvas" Grid.RowSpan="2" Margin="-5" HorizontalAlignment="Stretch" Background="#000" Opacity=".85" Visibility="{Binding IsProcessing, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid Width="{Binding ActualWidth, ElementName=LoadingCanvas}" Height="{Binding ActualHeight, ElementName=LoadingCanvas}">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <TextBlock Text="{Binding ProcessingStatus}" Foreground="#fff" FontSize="22"/>
+                </StackPanel>
+            </Grid>
+        </Canvas>
+        <Canvas x:Name="DownloadSettings" Grid.RowSpan="2" Margin="-5" HorizontalAlignment="Stretch" Background="#000" Opacity=".98" Visibility="{Binding IsProcessingDownload, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid DataContext="{Binding SelectedInstance}" Width="{Binding ActualWidth, ElementName=DownloadSettings}" Height="{Binding ActualHeight, ElementName=DownloadSettings}">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="Preparing your new instance." HorizontalAlignment="Center" Margin="0, 0, 0, 20" Foreground="#fff" FontSize="22"/>
+                    <WrapPanel Orientation="Horizontal">
+                        <TextBlock Text="Choose name: " Foreground="#fff" FontSize="16" VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding Instance.Title}" Padding="2, 5, 5, 5" Width="250"/>
+                    </WrapPanel>
+                    <WrapPanel Orientation="Horizontal" Margin="0, 20, 0, 0">
+                        <TextBlock Text="Install forge? " Foreground="#fff" FontSize="16" VerticalAlignment="Center" Margin="0, 0, 9, 0"/>
+                        <ComboBox Padding="5" MinWidth="250">
+                            <ComboBoxItem Content="No" IsSelected="True"/>
+                            <ComboBoxItem Content="Version n.m"/>
+                            <ComboBoxItem Content="Version n.m"/>
+                            <ComboBoxItem Content="Version n.m"/>
+                        </ComboBox>
+                    </WrapPanel>
+                    <Button Content="Done!" Command="{Binding ConfigureDownloadCommand}" BorderThickness="0" Cursor="Hand" FontSize="16" Margin="0, 20, 0, 0" Padding="0, 5"/>
                 </StackPanel>
             </Grid>
         </Canvas>

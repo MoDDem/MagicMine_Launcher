@@ -85,7 +85,7 @@
     <Compile Include="Components\MojangAPI\Requests\Request.cs" />
     <Compile Include="Components\MojangAPI\Requests\TechnicPackRequest.cs" />
     <Compile Include="Components\MojangAPI\Requests\ValidateRequest.cs" />
-    <Compile Include="Components\MojangAPI\Requests\VersionsRequest.cs" />
+    <Compile Include="Components\MojangAPI\Requests\VanillaRequests.cs" />
     <Compile Include="Components\MojangAPI\Response.cs" />
     <Compile Include="Components\MultiBindigConverter.cs" />
     <Compile Include="Components\PasswordHelper.cs" />
@@ -98,6 +98,7 @@
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="ViewModel\Pages\ATLauncherViewModel.cs" />
     <Compile Include="ViewModel\Pages\CurseForgeViewModel.cs" />
+    <Compile Include="ViewModel\Pages\Instances\VanillaInstanceViewModel.cs" />
     <Compile Include="ViewModel\Pages\IPageViewModel.cs" />
     <Compile Include="ViewModel\Pages\SettingsViewModel.cs" />
     <Compile Include="ViewModel\Pages\TechnicPackViewModel.cs" />

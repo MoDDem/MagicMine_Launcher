@@ -4,15 +4,11 @@ using MagicMine_Launcher.Components.MojangAPI.Requests;
 using MagicMine_Launcher.Model;
 using MagicMine_Launcher.ViewModel.Pages;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace MagicMine_Launcher.ViewModel {

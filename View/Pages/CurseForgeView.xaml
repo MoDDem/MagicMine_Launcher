@@ -33,7 +33,6 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" Grid.Column="1" Name="ScrollViewer">
-                    <!-- Lidl MVVM can sleep well now -->
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewMouseWheel">
                             <components:InvokeDelegateCommandAction Command="{Binding CallCategoryScroll}" x:Name="ScrollDelegateCommandAction">

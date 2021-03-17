@@ -4,12 +4,10 @@ using MagicMine_Launcher.Components.MojangAPI.Requests;
 using MagicMine_Launcher.Model;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -65,7 +63,7 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 							viewer.ScrollToTop();
 					} else if(Math.Abs(viewer.ScrollableHeight - viewer.VerticalOffset) > viewer.ScrollableHeight - 1 & !IsProcessing & CanScrollTopOrBottom[0]) {
 						page--;
-						if(page <= 0) CanScrollTopOrBottom[0] = false;
+						if(page <= 1) CanScrollTopOrBottom[0] = false;
 						else CanScrollTopOrBottom[1] = true;
 
 						Instances.Clear();
@@ -83,10 +81,10 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 		public TechnicPackViewModel(MainViewModel main) {
 			MainVM = main;
 			Instances = new ObservableCollection<InstanceModel>();
-			PropertyChanged += CurseForgeViewModel_PropertyChanged;
+			PropertyChanged += TechnicPackViewModel_PropertyChanged;
 		}
 
-		private void CurseForgeViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e) {
+		private void TechnicPackViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e) {
 			if(e.PropertyName == nameof(InstanceSort)) {
 				Instances.Clear();
 				page = 1;

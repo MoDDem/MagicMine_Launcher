@@ -8,6 +8,8 @@ using MagicMine_Launcher.Components;
 using System.Collections.ObjectModel;
 using MagicMine_Launcher.Components.MojangAPI;
 using MagicMine_Launcher.Components.MojangAPI.Requests;
+using System.Windows.Input;
+using MagicMine_Launcher.ViewModel.Pages.Instances;
 
 namespace MagicMine_Launcher.ViewModel.Pages {
 	class VanillaViewModel : BaseVM, IPageViewModel {
@@ -34,87 +36,91 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 			set => Set(ref processingStatus, value, nameof(ProcessingStatus));
 		}
 
-		public List<InstanceModel> Instances { get; set; }
-		public ObservableCollection<InstanceModel> SortedInstances { get; set; }
-
-		private InstanceModel activeInstance;
-		public InstanceModel ActiveInstance {
-			get => activeInstance;
-			set {
-				Set(ref activeInstance, value, nameof(ActiveInstance));
-			}
-		}
+		public List<VanillaInstanceViewModel> Instances { get; set; }
+		public ObservableCollection<VanillaInstanceViewModel> SortedInstances { get; set; }
 
 		private RelayCommand updateInstanceCategory;
 		public RelayCommand UpdateInstanceCategory {
 			get {
-				return updateInstanceCategory ??
-					(updateInstanceCategory = new RelayCommand(async obj => {
-						if(!isClosing) {
-							bool enable = false, multipler = false;
-							string category = null;
-							if(obj.ToString().Contains("+")) {
-								category = obj.ToString().Replace("+", string.Empty);
-								enable = true;
-								categories.Add(category);
-							} else if(obj.ToString().Contains("-")) {
-								category = obj.ToString().Replace("-", string.Empty);
-								enable = false;
-								categories.Remove(category);
-							}else if(obj.ToString().Contains("*")) {
-								category = obj.ToString().Replace("*", string.Empty);
-								multipler = true;
-								categories.Clear();
-								categories.Add(category);
-								for(int i = 0; i < SelectedCategories.Count; i++)
-									SelectedCategories[i] = false;
-							}
+				return updateInstanceCategory ?? (updateInstanceCategory = new RelayCommand(async obj => {
+					if(!isClosing) {
+						bool enable = false, multipler = false;
+						string category = null;
+						if(obj.ToString().Contains("+")) {
+							category = obj.ToString().Replace("+", string.Empty);
+							enable = true;
+							categories.Add(category);
+						} else if(obj.ToString().Contains("-")) {
+							category = obj.ToString().Replace("-", string.Empty);
+							enable = false;
+							categories.Remove(category);
+						}else if(obj.ToString().Contains("*")) {
+							category = obj.ToString().Replace("*", string.Empty);
+							multipler = true;
+							categories.Clear();
+							categories.Add(category);
+							for(int i = 0; i < SelectedCategories.Count; i++)
+								SelectedCategories[i] = false;
+						}
 
-							if(category != null) {
-								switch(category) {
-									case "Release":
-										SelectedCategories[0] = multipler == false ? enable : multipler;
-										break;
-									case "Snapshot":
-										SelectedCategories[1] = multipler == false ? enable : multipler;
-										break;
-									case "Beta":
-										SelectedCategories[2] = multipler == false ? enable : multipler;
-										break;
-									case "Alpha":
-										SelectedCategories[3] = multipler == false ? enable : multipler;
-										break;
-								}
-							}
-
-							foreach(var item in Instances) {
-								if(categories.Contains(item.Type.ToString())) {
-									if(SortedInstances.Contains(item))
-										continue;
-
-									SortedInstances.Add(item);
-									await Task.Delay(20);
-								} else {
-									if(SortedInstances.Contains(item))
-										SortedInstances.Remove(item);
-								}
+						if(category != null) {
+							switch(category) {
+								case "Release":
+									SelectedCategories[0] = multipler == false ? enable : multipler;
+									break;
+								case "Snapshot":
+									SelectedCategories[1] = multipler == false ? enable : multipler;
+									break;
+								case "Beta":
+									SelectedCategories[2] = multipler == false ? enable : multipler;
+									break;
+								case "Alpha":
+									SelectedCategories[3] = multipler == false ? enable : multipler;
+									break;
 							}
 						}
+
+						foreach(var item in Instances) {
+							if(categories.Contains(item.Instance.Type.ToString())) {
+								if(SortedInstances.Contains(item))
+									continue;
+
+								SortedInstances.Add(item);
+								await Task.Delay(20);
+							} else {
+								if(SortedInstances.Contains(item))
+									SortedInstances.Remove(item);
+							}
+						}
+					}
 				}));
 			}
+		}
+
+		private VanillaInstanceViewModel selectedInstance;
+		public VanillaInstanceViewModel SelectedInstance {
+			get => selectedInstance;
+			set => Set(ref selectedInstance, value, nameof(SelectedInstance));
+		}
+
+		private bool isProcessingDownload;
+		public bool IsProcessingDownload {
+			get => isProcessingDownload;
+			set => Set(ref isProcessingDownload, value, nameof(IsProcessingDownload));
 		}
 
 		public VanillaViewModel(MainViewModel mainVM) {
 			MainVM = mainVM;
 
-			Instances = new List<InstanceModel>();
-			SortedInstances = new ObservableCollection<InstanceModel>();
+			Instances = new List<VanillaInstanceViewModel>();
+			SortedInstances = new ObservableCollection<VanillaInstanceViewModel>();
 
 			SelectedCategories = new ObservableCollection<bool>{ true, false, false, false };
 			categories = new List<string> { 
 				"Release"
 			};
 		}
+
 		public void PageOpened() {
 			isClosing = false;
 			LoadInstances(0);
@@ -124,6 +130,7 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 			SortedInstances.Clear();
 			Instances.Clear();
 		}
+
 
 		private async void LoadInstances(int attempt) {
 			SortedInstances.Clear();
@@ -142,7 +149,7 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 					ProcessingStatus = $"Sorting instances: {i} of {Instances.Count}...";
 					i++;
 
-					if(categories.Contains(item.Type.ToString())) {
+					if(categories.Contains(item.Instance.Type.ToString())) {
 						if(SortedInstances.Contains(item))
 							continue;
 
@@ -164,8 +171,7 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 
 			ProcessingStatus = "Retrieving versions from mojang...";
 
-			Response versions = await new VersionsRequest().PerformRequest();
-
+			Response versions = await new VanillaRequests().PerformRequest();
 			if(versions.IsSuccess) {
 				ProcessingStatus = "Building list of instances...";
 
@@ -180,7 +186,7 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 							(InstanceType) Enum.Parse(typeof(InstanceType), item["type"].ToString().Replace("old_", string.Empty), true) :
 							(InstanceType) Enum.Parse(typeof(InstanceType), item["type"].ToString(), true)
 					};
-					Instances.Add(instance);
+					Instances.Add(new VanillaInstanceViewModel(instance, MainVM));
 				}
 			} else {
 				attempt++;
@@ -194,7 +200,7 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 				ProcessingStatus = $"Sorting instances: {i} of {Instances.Count}...";
 				i++;
 
-				if(categories.Contains(item.Type.ToString())) {
+				if(categories.Contains(item.Instance.Type.ToString())) {
 					if(SortedInstances.Contains(item))
 						continue;
 

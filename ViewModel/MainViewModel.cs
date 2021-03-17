@@ -2,10 +2,13 @@
 using System.Windows;
 using System.Windows.Input;
 using MagicMine_Launcher.Components;
+using MagicMine_Launcher.View;
 using MagicMine_Launcher.ViewModel.Pages;
 
 namespace MagicMine_Launcher.ViewModel {
 	class MainViewModel : BaseVM {
+		public MainWindow MainWindow { get; private set; }
+
 		private NavigationViewModel navigationVM;
 		public NavigationViewModel NavigationVM {
 			get => navigationVM;
@@ -44,6 +47,9 @@ namespace MagicMine_Launcher.ViewModel {
 		}
 
 		public MainViewModel() {
+			MainWindow = new MainWindow { DataContext = this };
+			MainWindow.Show();
+
 			NavigationVM = new NavigationViewModel(this);
 			UserVM = new UserViewModel(this);
 			SettingsVM = new SettingsViewModel(this);

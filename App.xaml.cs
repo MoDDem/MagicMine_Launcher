@@ -15,13 +15,8 @@ namespace MagicMine_Launcher {
 	/// Логика взаимодействия для App.xaml
 	/// </summary>
 	public partial class App : Application {
-		private new MainWindow MainWindow;
-
 		private void Application_Startup(object sender, StartupEventArgs e) {
-			var main = new MainViewModel();
-
-			MainWindow = new MainWindow { DataContext = main };
-			MainWindow.Show();
+			new MainViewModel();
 			Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
 		}
 
@@ -32,7 +27,7 @@ namespace MagicMine_Launcher {
 				if(fs.CanSeek) {
 					fs.Seek(fs.Length, SeekOrigin.Begin);
 				}
-				string _str = $"---New Exception Catched---\n-Message:\n\u0020\u0020\u0020{e.Exception.Message}\n-------\n-StackTrace:\n{e.Exception.StackTrace}\n-------\n-Source:\n\u0020\u0020\u0020{e.Exception.Source}\n---End of Exception log---\n\n";
+				string _str = $"---New Exception Catched---\n{DateTime.Now}\n-Message:\n\u0020\u0020\u0020{e.Exception.Message}\n-------\n-StackTrace:\n{e.Exception.StackTrace}\n-------\n-Source:\n\u0020\u0020\u0020{e.Exception.Source}\n---End of Exception log---\n\n";
 				byte[] str = Encoding.Default.GetBytes(_str);
 				fs.Write(str, 0, str.Length);
 			}

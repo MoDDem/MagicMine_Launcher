@@ -9,7 +9,6 @@ using System.Windows.Input;
 namespace MagicMine_Launcher.ViewModel.Pages {
 	class NavigationViewModel : BaseVM {
 		private MainViewModel MainVM { get; set; }
-		private PageModel PageModel { get; set; }
 
 		public ObservableCollection<PageModel> Pages { get; set; }
 
@@ -37,8 +36,6 @@ namespace MagicMine_Launcher.ViewModel.Pages {
 
 		public NavigationViewModel(MainViewModel main) {
 			MainVM = main;
-
-			PageModel = new PageModel();
 			Pages = new ObservableCollection<PageModel>(LoadPages());
 		}
 

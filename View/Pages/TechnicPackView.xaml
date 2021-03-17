@@ -117,6 +117,7 @@
                                                     <Setter Property="BorderThickness" Value="0, 0, 0, 2"/>
                                                     <Setter Property="Margin" Value="0, .4, 0, 0"/>
                                                     <Setter Property="Cursor" Value="Hand"/>
+                                                    <Setter Property="ToolTip" Value="Site doensn't provide instance version. Click download instance to get instance version."/>
                                                     <Style.Triggers>
                                                         <Trigger Property="IsMouseOver" Value="True">
                                                             <Setter Property="Foreground" Value="#00adb5"/>

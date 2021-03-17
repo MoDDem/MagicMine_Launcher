@@ -105,6 +105,12 @@ namespace MagicMine_Launcher.ViewModel {
 		}
 
 		private void CreateLoadSettingsFile() {
+			bool isSettingsExist = File.Exists(path);
+			
+			string javaLoc = null;
+			if(!isSettingsExist)
+				javaLoc = SearchForJava();
+
 			Settings = new SettingsModel {
 				Launcher = new LauncherModel {
 					ShowConsole = true,
@@ -123,13 +129,13 @@ namespace MagicMine_Launcher.ViewModel {
 					IsFullScreen = false
 				},
 				Java = new JavaModel {
-					Path = SearchForJava(),
+					Path = javaLoc,
 					MinMemory = 256,
 					MaxMemory = 2048
 				}
 			};
 
-			if(File.Exists(path)) {
+			if(isSettingsExist) {
 				Settings = JsonConvert.DeserializeObject<SettingsModel>(File.ReadAllText(path));
 			} else {
 				using(FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
@@ -146,14 +152,23 @@ namespace MagicMine_Launcher.ViewModel {
 				if(File.Exists(fullPath))
 					return fullPath;
 			}
-
-			string[] dirs = Directory.GetDirectories(@"C:\Program Files\Java\");
-			if(dirs.Length > 0) 
+			string[] dirs = null;
+			try
+			{
+				dirs = Directory.GetDirectories(@"C:\Program Files\Java\");
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e.Message);
+			}
+			
+			if(dirs != null) 
 				return dirs[0] + @"\bin\javaw.exe";
 
 			javaWindow = new JavaNotFound {
 				DataContext = this
 			};
+			javaWindow.Owner = MainVM.MainWindow;
 			javaWindow.ShowDialog();
 
 			return !string.IsNullOrEmpty(JavaPath) ? JavaPath : null;
